@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍑 Spank — Thappad maro, awaaz suno</title>
+    <meta name="description" content="Slap your MacBook. See what happens. Free app for Apple Silicon Macs.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg-elevated: #141414;
+            --accent: #ff6b35;
+            --accent-glow: rgba(255, 107, 53, 0.4);
+            --peach: #ffb5a7;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --green: #4ade80;
+            --yellow: #fbbf24;
+            --border: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.5; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .peach-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .peach {
+            font-size: 180px;
+            display: block;
+            filter: drop-shadow(0 0 60px rgba(255, 181, 167, 0.3));
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .peach:hover {
+            animation: none;
+        }
+
+        .peach:active {
+            transform: scale(0.9) rotate(-10deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+        .slap-effect {
+            position: absolute;
+            top: 20%;
+            right: -80px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--accent);
+            transform: rotate(12deg);
+            opacity: 0;
+            animation: slapIn 0.5s ease-out 1s forwards;
+        }
+
+        @keyframes slapIn {
+            0% { opacity: 0; transform: rotate(12deg) scale(0.5) translateX(-20px); }
+            50% { opacity: 1; transform: rotate(12deg) scale(1.2) translateX(0); }
+            100% { opacity: 1; transform: rotate(12deg) scale(1) translateX(0); }
+        }
+
+        .impact-lines {
+            position: absolute;
+            top: 30%;
+            right: -40px;
+            width: 60px;
+            height: 40px;
+        }
+
+        .impact-lines span {
+            position: absolute;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            opacity: 0;
+            animation: lineIn 0.3s ease-out forwards;
+        }
+
+        .impact-lines span:nth-child(1) { width: 30px; top: 0; right: 0; animation-delay: 1.1s; transform: rotate(-15deg); }
+        .impact-lines span:nth-child(2) { width: 40px; top: 15px; right: -5px; animation-delay: 1.2s; }
+        .impact-lines span:nth-child(3) { width: 25px; top: 30px; right: 5px; animation-delay: 1.3s; transform: rotate(15deg); }
+
+        @keyframes lineIn {
+            0% { opacity: 0; width: 0; }
+            100% { opacity: 1; }
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--peach) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            max-width: 400px;
+        }
+
+        .tagline strong {
+            color: var(--text);
+        }
+
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 20px 40px;
+            border-radius: 0;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px var(--accent-glow);
+        }
+
+        .download-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .free-badge {
+            background: var(--green);
+            color: var(--bg);
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .requirements {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--yellow);
+            color: var(--yellow);
+            padding: 15px 25px;
+            margin-top: 30px;
+            font-size: 0.85rem;
+            max-width: 500px;
+        }
+
+        .warning-banner strong {
+            color: var(--text);
+        }
+
+        /* Sections */
+        section {
+            padding: 120px 60px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 60px;
+            font-size: 0.9rem;
+        }
+
+        /* Install Section */
+        .install-section {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .explainer {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 25px 35px;
+            margin: 0 auto 50px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 700px;
+        }
+
+        .explainer strong {
+            color: var(--accent);
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .step {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 25px 30px;
+            display: grid;
+            grid-template-columns: 50px 1fr;
+            gap: 20px;
+            align-items: start;
+            transition: border-color 0.2s;
+        }
+
+        .step:hover {
+            border-color: var(--text-muted);
+        }
+
+        .step-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .step-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        kbd {
+            display: inline-block;
+            background: var(--border);
+            color: var(--text);
+            padding: 3px 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            border: 1px solid #444;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid var(--border);
+            padding: 18px 24px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--green);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .code-block:hover {
+            border-color: var(--green);
+            background: #1f1f1f;
+        }
+
+        .code-block.copied {
+            border-color: var(--green);
+        }
+
+        .code-block.copied::after {
+            content: 'COPIED';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--green);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .copy-hint {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step.highlight {
+            border-color: var(--accent);
+            border-width: 2px;
+        }
+
+        .step.highlight .step-num {
+            color: var(--accent);
+        }
+
+        .step.success {
+            border-color: var(--green);
+            border-width: 2px;
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .step.success .step-num {
+            color: var(--green);
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            background: var(--bg);
+            padding: 40px 25px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .feature:hover {
+            background: var(--bg-elevated);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* FAQ */
+        .faq-section {
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border);
+        }
+
+        .faq {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            margin-bottom: -1px;
+        }
+
+        .faq-q {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .faq-q:hover {
+            background: var(--bg);
+        }
+
+        .faq-a {
+            padding: 0 25px 25px;
+            color: var(--text-muted);
+            display: none;
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        .faq-item.open .faq-a {
+            display: block;
+        }
+
+        .faq-item.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .arrow {
+            color: var(--text-muted);
+            transition: transform 0.2s;
+            font-size: 0.7rem;
+        }
+
+        .faq-a code {
+            display: block;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--green);
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 80px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer .peach-small {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .credits {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1200px) {
+            .container { max-width: 1000px; }
+            section { padding: 140px 80px; }
+            .hero { padding: 80px 60px; }
+            .hero::before { width: 900px; height: 900px; }
+            .peach { font-size: 220px; }
+            h1 { font-size: 10rem; letter-spacing: 12px; }
+            .tagline { font-size: 1.2rem; max-width: 450px; }
+            .features-grid { gap: 3px; }
+            .feature { padding: 50px 30px; }
+            .feature-icon { font-size: 3rem; }
+            .step { padding: 30px 35px; gap: 25px; }
+            .step-num { font-size: 2.2rem; }
+            .step-content h3 { font-size: 1.4rem; }
+            h2 { font-size: 3.5rem; }
+        }
+
+        /* Tablet */
+        @media (max-width: 768px) {
+            nav { padding: 15px 20px; }
+            .nav-links { gap: 15px; }
+            nav a { font-size: 0.75rem; }
+            section { padding: 80px 30px; }
+            
+            .hero { padding: 40px 20px; }
+            .peach { font-size: 120px; }
+            .slap-effect { font-size: 2rem; right: -50px; }
+            h1 { letter-spacing: 4px; }
+            
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .step { grid-template-columns: 40px 1fr; padding: 20px; }
+            .step-num { font-size: 1.5rem; }
+            .code-block { font-size: 0.75rem; padding: 14px 18px; }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            section { padding: 60px 20px; }
+            .logo { font-size: 1.2rem; }
+            .peach { font-size: 100px; }
+            .slap-effect { display: none; }
+            .impact-lines { display: none; }
+            .download-btn { padding: 18px 30px; font-size: 0.9rem; }
+            .warning-banner { flex-direction: column; text-align: center; }
+            .features-grid { grid-template-columns: 1fr; }
+            h2 { font-size: 2.2rem; }
+            .explainer { padding: 20px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">🍑 SPANK</div>
+        <div class="nav-links">
+            <a href="#install">Install</a>
+            <a href="#features">Features</a>
+            <a href="#faq">FAQ</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="peach-container">
+                <span class="peach" id="peach">🍑</span>
+                <span class="slap-effect">THAPPAD!</span>
+                <div class="impact-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            
+            <h1>SPANK</h1>
+            <p class="tagline">
+                Slap your MacBook. <strong>See what happens.</strong><br>
+                That's it. That's the app.
+            </p>
+            
+            <div class="cta-group">
+                <a href="Spank.dmg" download class="download-btn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    Download for Mac
+                    <span class="free-badge">FREE</span>
+                </a>
+                <p class="requirements">macOS 13+ · Apple Silicon (M1/M2/M3/M4) required</p>
+            </div>
+
+            <div class="warning-banner">
+                <span>⚠️</span>
+                <span><strong>Unsigned app</strong> — macOS will block it. Follow install steps below.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Install -->
+    <section class="install-section" id="install">
+        <div class="container">
+            <h2>INSTALLATION</h2>
+            <p class="section-subtitle">Takes 60 seconds. One-time setup.</p>
+            
+            <div class="explainer">
+                <strong>Why extra steps?</strong> This app isn't signed with Apple Developer ID ($99/year — not worth it for a free meme app). The commands below just remove macOS's quarantine flag.
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h3>DOWNLOAD & MOUNT</h3>
+                        <p>Double-click <strong>Spank.dmg</strong> to open it</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h3>DRAG TO APPLICATIONS</h3>
+                        <p>Drag <strong>Spank.app</strong> into your Applications folder</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h3>OPEN TERMINAL</h3>
+                        <p>Press <kbd>⌘</kbd> + <kbd>Space</kbd>, type <strong>Terminal</strong>, hit Enter</p>
+                    </div>
+                </div>
+
+                <div class="step highlight">
+                    <div class="step-num">04</div>
+                    <div class="step-content">
+                        <h3>REMOVE GATEKEEPER BLOCK</h3>
+                        <p>Copy-paste this command and press Enter:</p>
+                        <div class="code-block" onclick="copyToClipboard(this)">xattr -cr /Applications/Spank.app</div>
+                        <span class="copy-hint">Click to copy</span>
+                    </div>
+                </div>
+
+                <div class="step highlight">
+                    <div class="step-num">05</div>
+                    <div class="step-content">
+                        <h3>RUN INSTALLER</h3>
+                        <p>Copy-paste this command (enter your password when asked):</p>
+                        <div class="code-block" onclick="copyToClipboard(this)">sudo /Applications/Spank.app/Contents/Resources/install-simple.sh</div>
+                        <span class="copy-hint">Click to copy — Installs background service (one-time)</span>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-num">06</div>
+                    <div class="step-content">
+                        <h3>LAUNCH THE APP</h3>
+                        <p>Open <strong>Spank.app</strong> from Applications. Look for 🍑 in your menu bar.</p>
+                    </div>
+                </div>
+
+                <div class="step success">
+                    <div class="step-num">07</div>
+                    <div class="step-content">
+                        <h3>SLAP YOUR MACBOOK</h3>
+                        <p>Give it a <strong>hard slap</strong> on the side or palm rest. Trust us.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <h2>FEATURES</h2>
+            <p class="section-subtitle">Everything you need. Nothing you don't.</p>
+            
+            <div class="features-grid">
+                <div class="feature">
+                    <span class="feature-icon">🍑</span>
+                    <h3>MENU BAR APP</h3>
+                    <p>Lives in your menu bar. Click to adjust.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🎚️</span>
+                    <h3>ADJUSTABLE</h3>
+                    <p>Control how hard you need to slap.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">⚡</span>
+                    <h3>AUTO-START</h3>
+                    <p>Runs at boot. Always listening.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">⏱️</span>
+                    <h3>COOLDOWN</h3>
+                    <p>Prevents spam during rapid slaps.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🔊</span>
+                    <h3>SURPRISE AUDIO</h3>
+                    <p>You'll find out when you slap.</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🆓</span>
+                    <h3>100% FREE</h3>
+                    <p>No payment. No ads. Just vibes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <h2>FAQ</h2>
+            <p class="section-subtitle">Common questions, answered.</p>
+            
+            <div class="faq">
+                <div class="faq-item">
+                    <div class="faq-q">
+                        "Apple cannot verify" or app is "damaged"?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        This app isn't signed with Apple ($99/year — pass). macOS blocks unsigned apps by default.<br><br>
+                        <strong>Fix:</strong> Open Terminal and run:
+                        <code>xattr -cr /Applications/Spank.app</code>
+                        This removes the quarantine flag. Safe — check the source on GitHub if paranoid.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">
+                        Will it void my warranty?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        No. The app just reads the accelerometer Apple put in your Mac. Slapping is fine — unless you crack the screen.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">
+                        Does it work on Intel Macs?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        No. Only Apple Silicon Macs (M1 Pro, M2, M3, M4) have the right accelerometer. Sorry Intel gang.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">
+                        Nothing happens when I slap?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        1. Slap <strong>harder</strong> — threshold is set high to avoid false triggers<br>
+                        2. Check the 🍑 in menu bar — make sure it shows "Running"<br>
+                        3. Lower the threshold slider if needed
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">
+                        Does it drain battery?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        Barely. CPU usage is near zero — it just listens to the accelerometer.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">
+                        How do I uninstall?
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="faq-a">
+                        Run this in Terminal:
+                        <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && sudo rm /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="peach-small">🍑</span>
+        <p>Made with chaos by <a href="#">AJ</a></p>
+        
+        <div class="credits">
+            <p>Accelerometer detection powered by <a href="https://github.com/taigrr/spank" target="_blank">taigrr/spank</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ toggles
+        document.querySelectorAll('.faq-q').forEach(q => {
+            q.addEventListener('click', () => {
+                q.parentElement.classList.toggle('open');
+            });
+        });
+
+        // Copy to clipboard
+        function copyToClipboard(el) {
+            const text = el.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                el.classList.add('copied');
+                setTimeout(() => el.classList.remove('copied'), 2000);
+            });
+        }
+
+        // Peach slap interaction
+        const peach = document.getElementById('peach');
+        peach.addEventListener('click', () => {
+            peach.style.transform = 'scale(0.8) rotate(-15deg)';
+            setTimeout(() => {
+                peach.style.transform = '';
+            }, 150);
+        });
+    </script>
+</body>
+</html>
