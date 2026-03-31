@@ -165,18 +165,71 @@
         .feature-text h3 { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
         .feature-text p { font-size: 0.85rem; color: var(--text-light); }
 
-        .install-box {
-            background: var(--text);
-            color: var(--cream);
-            border-radius: 20px;
-            padding: 28px;
-            text-align: center;
+        /* Install Methods */
+        .methods { display: flex; flex-direction: column; gap: 10px; }
+        
+        .method {
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 14px;
+            overflow: hidden;
         }
-        .install-box h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 6px; }
-        .install-box > p { font-size: 0.85rem; opacity: 0.6; margin-bottom: 20px; }
+        
+        .method-header {
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .method-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .method-icon.terminal { background: var(--text); color: #4ade80; }
+        .method-icon.ai { background: linear-gradient(135deg, var(--accent) 0%, #FF8F6B 100%); color: white; }
+        .method-icon.dmg { background: var(--peach-light); color: var(--text); }
+        
+        .method-info { flex: 1; }
+        .method-title { font-weight: 600; font-size: 0.95rem; }
+        .method-desc { font-size: 0.8rem; color: var(--text-light); }
+        
+        .method-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(255, 107, 74, 0.15);
+            color: var(--accent);
+        }
+        
+        .method-arrow {
+            color: var(--text-light);
+            transition: transform 0.2s;
+            font-size: 0.75rem;
+        }
+        .method.open .method-arrow { transform: rotate(180deg); }
+        
+        .method-content {
+            display: none;
+            padding: 0 18px 18px;
+        }
+        .method.open .method-content { display: block; }
 
         .code {
-            background: rgba(255,255,255,0.1);
+            background: var(--text);
             border-radius: 10px;
             padding: 14px;
             font-family: 'SF Mono', monospace;
@@ -185,10 +238,10 @@
             text-align: left;
             overflow-x: auto;
             cursor: pointer;
-            margin-bottom: 12px;
+            margin: 12px 0 6px;
             position: relative;
         }
-        .code:hover { background: rgba(255,255,255,0.15); }
+        .code:hover { background: #1a1a1a; }
         .code.copied::after {
             content: 'Copied!';
             position: absolute;
@@ -202,10 +255,30 @@
             font-size: 0.7rem;
             font-family: 'DM Sans', sans-serif;
         }
-
-        .or { display: block; margin: 16px 0; font-size: 0.8rem; opacity: 0.4; }
-
-        .install-box .cta { background: var(--cream); color: var(--text); animation: none; }
+        .code-hint { font-size: 0.75rem; color: var(--text-light); }
+        
+        .step { display: flex; gap: 12px; margin-top: 14px; }
+        .step-num {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--peach-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+        .step-desc { font-size: 0.85rem; color: var(--text-light); }
+        
+        .method .cta {
+            margin-top: 12px;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+        }
 
         .faq-item { border-bottom: 1px solid rgba(0,0,0,0.08); padding: 18px 0; }
         .faq-item:last-child { border: none; }
@@ -321,35 +394,127 @@
     </section>
 
     <section id="install">
-        <div class="install-box">
-            <h3>Get Spank</h3>
-            <p>One command, one password, unlimited regret.</p>
-            <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
-            <span class="or">— or —</span>
-            <a href="https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.dmg" class="cta" download>
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                Download DMG
-            </a>
+        <h2>Get <em>Spank</em></h2>
+        <div class="methods">
+            <!-- Terminal Method -->
+            <div class="method open">
+                <div class="method-header" onclick="toggleMethod(this)">
+                    <div class="method-icon terminal">&gt;_</div>
+                    <div class="method-info">
+                        <div class="method-title">Terminal</div>
+                        <div class="method-desc">One command, one password</div>
+                    </div>
+                    <span class="method-badge">Recommended</span>
+                    <span class="method-arrow">▼</span>
+                </div>
+                <div class="method-content">
+                    <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
+                    <span class="code-hint">Click to copy · Enter password when prompted</span>
+                </div>
+            </div>
+
+            <!-- AI Agent Method -->
+            <div class="method">
+                <div class="method-header" onclick="toggleMethod(this)">
+                    <div class="method-icon ai">AI</div>
+                    <div class="method-info">
+                        <div class="method-title">AI Agent</div>
+                        <div class="method-desc">Claude Code, Cursor, Windsurf</div>
+                    </div>
+                    <span class="method-arrow">▼</span>
+                </div>
+                <div class="method-content">
+                    <div class="step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div class="step-title">Open your AI agent</div>
+                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider, or any coding assistant</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div class="step-title">Say:</div>
+                            <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div class="step-title">Enter password when prompted</div>
+                            <div class="step-desc">That's it. Your agent handles the rest.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DMG Method -->
+            <div class="method">
+                <div class="method-header" onclick="toggleMethod(this)">
+                    <div class="method-icon dmg">📦</div>
+                    <div class="method-info">
+                        <div class="method-title">Download DMG</div>
+                        <div class="method-desc">Classic drag-and-drop</div>
+                    </div>
+                    <span class="method-arrow">▼</span>
+                </div>
+                <div class="method-content">
+                    <a href="https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.dmg" class="cta" download>
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Download Spank.dmg
+                    </a>
+                    <div class="step" style="margin-top: 16px;">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div class="step-desc">Open DMG, drag Spank to Applications</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div class="step-desc">Right-click app → Open → Open (first time only)</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div class="step-desc">Click 🍑 in menu bar → Start Daemon → Enter password</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section>
-        <h2>Questions</h2>
+        <h2><em>Questions</em></h2>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why does it need my password?</div>
+            <div class="faq-a">The accelerometer requires root access. We're not mining crypto—just detecting your aggression. The code is open source if you want to verify we're not doing anything weird.</div>
+        </div>
         <div class="faq-item">
             <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">My Mac says "unidentified developer"</div>
-            <div class="faq-a">Right-click → Open → Open again. Or: <code>xattr -cr /Applications/Spank.app</code></div>
+            <div class="faq-a">Apple doesn't trust us yet. Right-click the app → Open → Open again. Or run: <code>xattr -cr /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Nothing happens when I slap</div>
-            <div class="faq-a">Check for the 🍑 in menu bar. If it's there, slap harder. Commit to the bit.</div>
+            <div class="faq-a">Look for the 🍑 peach in your menu bar. If it's there, try slapping harder—you need to commit to the bit. If it's not there, the app isn't running. Check Applications folder.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Will this void my warranty?</div>
+            <div class="faq-a">Probably not? Apple's accelerometer is designed to detect drops. We're just... repurposing it. Hit responsibly. We are not liable for any damage to your laptop or your relationships.</div>
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Intel Mac?</div>
-            <div class="faq-a">No accelerometer on Intel. Apple Silicon only. This is your sign to upgrade.</div>
+            <div class="faq-a">Sorry, no accelerometer on Intel Macs. Apple Silicon only (M1/M2/M3/M4). This is your sign to upgrade.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Uninstall?</div>
-            <div class="faq-a">Drag to trash. Or: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist</code></div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I uninstall?</div>
+            <div class="faq-a">Click the 🍑 → Stop Daemon, then drag Spank.app to trash. Or for the nuclear option: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I add my own sounds?</div>
+            <div class="faq-a">Yes! Drop any .mp3 file into <code>/Users/Shared/spank-sounds/</code> and it'll appear in the sound picker. Name it something fun.</div>
         </div>
     </section>
 
@@ -366,6 +531,15 @@
                 el.classList.add('copied');
                 setTimeout(() => el.classList.remove('copied'), 2000);
             });
+        }
+
+        function toggleMethod(header) {
+            const method = header.closest('.method');
+            const wasOpen = method.classList.contains('open');
+            // Close all methods
+            document.querySelectorAll('.method').forEach(m => m.classList.remove('open'));
+            // Open clicked one if it wasn't already open
+            if (!wasOpen) method.classList.add('open');
         }
 
         const canvas = document.getElementById('particle-canvas');
@@ -425,7 +599,7 @@
 
         let ready = true;
         function slap(x, y, t) {
-            if (t.closest('a,button,.cta,.faq-q,.code')) return;
+            if (t.closest('a,button,.cta,.faq-q,.code,.method-header')) return;
             if (!ready) return;
             ready = false;
 

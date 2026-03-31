@@ -46,8 +46,11 @@ echo "→ Setting up sounds..."
 mkdir -p /Users/Shared/spank-sounds
 chmod 777 /Users/Shared/spank-sounds
 
-# Copy first available sound as default
-if [[ -d "$RESOURCES/sounds" ]]; then
+# Copy default sound (ma-ka-bhosda-aag)
+if [[ -f "$RESOURCES/sounds/ma-ka-bhosda-aag.mp3" ]]; then
+    cp "$RESOURCES/sounds/ma-ka-bhosda-aag.mp3" /Users/Shared/spank-sounds/sound.mp3
+    chmod 666 /Users/Shared/spank-sounds/sound.mp3
+elif [[ -d "$RESOURCES/sounds" ]]; then
     FIRST_SOUND=$(ls "$RESOURCES/sounds/"*.mp3 2>/dev/null | head -1)
     if [[ -n "$FIRST_SOUND" ]]; then
         cp "$FIRST_SOUND" /Users/Shared/spank-sounds/sound.mp3
