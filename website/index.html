@@ -223,10 +223,19 @@
         .method.open .method-arrow { transform: rotate(180deg); }
         
         .method-content {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 18px;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .method.open .method-content { 
+            max-height: 400px;
             padding: 0 18px 18px;
         }
-        .method.open .method-content { display: block; }
+        
+        .method-header:hover { background: rgba(255,255,255,0.3); }
+        .method-header { transition: background 0.2s; border-radius: 14px; }
+        .method.open .method-header { border-radius: 14px 14px 0 0; }
 
         .code {
             background: var(--text);
@@ -402,9 +411,9 @@
                     <div class="method-icon terminal">&gt;_</div>
                     <div class="method-info">
                         <div class="method-title">Terminal</div>
-                        <div class="method-desc">One command, one password</div>
+                        <div class="method-desc">One command. Paste and pray.</div>
                     </div>
-                    <span class="method-badge">Recommended</span>
+                    <span class="method-badge">Fastest</span>
                     <span class="method-arrow">▼</span>
                 </div>
                 <div class="method-content">
@@ -419,30 +428,31 @@
                     <div class="method-icon ai">AI</div>
                     <div class="method-info">
                         <div class="method-title">AI Agent</div>
-                        <div class="method-desc">Claude Code, Cursor, Windsurf</div>
+                        <div class="method-desc">Make your robot do it.</div>
                     </div>
+                    <span class="method-badge">Laziest</span>
                     <span class="method-arrow">▼</span>
                 </div>
                 <div class="method-content">
                     <div class="step">
                         <span class="step-num">1</span>
                         <div class="step-content">
-                            <div class="step-title">Open your AI agent</div>
-                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider, or any coding assistant</div>
+                            <div class="step-title">Open your AI overlord</div>
+                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-num">2</span>
                         <div class="step-content">
-                            <div class="step-title">Say:</div>
+                            <div class="step-title">Tell it:</div>
                             <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-num">3</span>
                         <div class="step-content">
-                            <div class="step-title">Enter password when prompted</div>
-                            <div class="step-desc">That's it. Your agent handles the rest.</div>
+                            <div class="step-title">Type password, feel superior</div>
+                            <div class="step-desc">Watch your AI minion do all the work.</div>
                         </div>
                     </div>
                 </div>
@@ -454,8 +464,9 @@
                     <div class="method-icon dmg">📦</div>
                     <div class="method-info">
                         <div class="method-title">Download DMG</div>
-                        <div class="method-desc">Classic drag-and-drop</div>
+                        <div class="method-desc">The old-fashioned way.</div>
                     </div>
+                    <span class="method-badge">Respect</span>
                     <span class="method-arrow">▼</span>
                 </div>
                 <div class="method-content">
@@ -466,19 +477,19 @@
                     <div class="step" style="margin-top: 16px;">
                         <span class="step-num">1</span>
                         <div class="step-content">
-                            <div class="step-desc">Open DMG, drag Spank to Applications</div>
+                            <div class="step-desc">Open DMG, drag to Applications like it's 2008</div>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-num">2</span>
                         <div class="step-content">
-                            <div class="step-desc">Right-click app → Open → Open (first time only)</div>
+                            <div class="step-desc">Right-click → Open → Open (Apple doesn't trust us. Fair.)</div>
                         </div>
                     </div>
                     <div class="step">
                         <span class="step-num">3</span>
                         <div class="step-content">
-                            <div class="step-desc">Click 🍑 in menu bar → Start Daemon → Enter password</div>
+                            <div class="step-desc">Click 🍑 → Start Daemon → Password → Slap away</div>
                         </div>
                     </div>
                 </div>
@@ -490,31 +501,35 @@
         <h2><em>Questions</em></h2>
         <div class="faq-item">
             <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why does it need my password?</div>
-            <div class="faq-a">The accelerometer requires root access. We're not mining crypto—just detecting your aggression. The code is open source if you want to verify we're not doing anything weird.</div>
+            <div class="faq-a">The accelerometer requires root access because Apple doesn't want you slapping your $3000 laptop. We're not mining crypto or stealing your nudes—just detecting violence. It's open source. Trust issues? Read the code.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">My Mac says "unidentified developer"</div>
-            <div class="faq-a">Apple doesn't trust us yet. Right-click the app → Open → Open again. Or run: <code>xattr -cr /Applications/Spank.app</code></div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Apple says "unidentified developer"</div>
+            <div class="faq-a">Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal: <code>xattr -cr /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Nothing happens when I slap</div>
-            <div class="faq-a">Look for the 🍑 peach in your menu bar. If it's there, try slapping harder—you need to commit to the bit. If it's not there, the app isn't running. Check Applications folder.</div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">I slapped it and nothing happened</div>
+            <div class="faq-a">First, look for the 🍑 in your menu bar. If it's there, you're not slapping hard enough. This isn't a gentle caress—commit to the violence. Really smack it. Your laptop can take it. Probably.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Will this void my warranty?</div>
-            <div class="faq-a">Probably not? Apple's accelerometer is designed to detect drops. We're just... repurposing it. Hit responsibly. We are not liable for any damage to your laptop or your relationships.</div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Will this break my MacBook?</div>
+            <div class="faq-a">Look, the accelerometer exists to detect drops. We're just... finding alternative uses. Apple engineers did not anticipate this. That said, we are absolutely not liable for cracked screens, dented chassis, or HR complaints. Spank responsibly.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">My coworkers are staring at me</div>
+            <div class="faq-a">Good. Assert dominance. Maintain eye contact while slapping your laptop. If they ask questions, just say "stress relief" and slap harder. This is a conversation ender, not a conversation starter.</div>
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Intel Mac?</div>
-            <div class="faq-a">Sorry, no accelerometer on Intel Macs. Apple Silicon only (M1/M2/M3/M4). This is your sign to upgrade.</div>
+            <div class="faq-a">No accelerometer on Intel. Apple said "you don't need to know when your laptop is being abused" and honestly they were wrong. M1/M2/M3/M4 only. Consider this your sign to upgrade.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I uninstall?</div>
-            <div class="faq-a">Click the 🍑 → Stop Daemon, then drag Spank.app to trash. Or for the nuclear option: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I uninstall this chaos?</div>
+            <div class="faq-a">Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I add my own sounds?</div>
-            <div class="faq-a">Yes! Drop any .mp3 file into <code>/Users/Shared/spank-sounds/</code> and it'll appear in the sound picker. Name it something fun.</div>
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I add my ex's voicemail as a sound?</div>
+            <div class="faq-a">Absolutely. Drop any .mp3 into <code>/Users/Shared/spank-sounds/</code> and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.</div>
         </div>
     </section>
 
