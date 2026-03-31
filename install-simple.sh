@@ -41,13 +41,21 @@ else
 fi
 chmod +x /usr/local/bin/spank
 
-# Setup sounds folder with embedded sound
+# Setup sounds folder with default sound
 echo "→ Setting up sounds..."
 mkdir -p /Users/Shared/spank-sounds
 chmod 777 /Users/Shared/spank-sounds
 
-if [[ -f "$RESOURCES/sound.mp3" ]]; then
+# Copy first available sound as default
+if [[ -d "$RESOURCES/sounds" ]]; then
+    FIRST_SOUND=$(ls "$RESOURCES/sounds/"*.mp3 2>/dev/null | head -1)
+    if [[ -n "$FIRST_SOUND" ]]; then
+        cp "$FIRST_SOUND" /Users/Shared/spank-sounds/sound.mp3
+        chmod 666 /Users/Shared/spank-sounds/sound.mp3
+    fi
+elif [[ -f "$RESOURCES/sound.mp3" ]]; then
     cp "$RESOURCES/sound.mp3" /Users/Shared/spank-sounds/
+    chmod 666 /Users/Shared/spank-sounds/sound.mp3
 fi
 
 # Install daemon
