@@ -7,6 +7,9 @@ struct SoundOption: Identifiable, Codable {
     let id: String          // filename without extension
     var name: String        // display name
     var emoji: String       // icon
+    var priority: Int?      // sort order (lower = first, nil = 10)
+    
+    var sortPriority: Int { priority ?? 10 }
     
     static func loadFromBundle() -> [SoundOption] {
         guard let soundsURL = Bundle.main.resourceURL?.appendingPathComponent("sounds") else {
@@ -38,7 +41,7 @@ struct SoundOption: Identifiable, Codable {
                 let displayName = id.replacingOccurrences(of: "-", with: " ").capitalized
                 return SoundOption(id: id, name: displayName, emoji: "🔊")
             }
-            .sorted { $0.name < $1.name }
+            .sorted { ($0.sortPriority, $0.name) < ($1.sortPriority, $1.name) }
     }
 }
 
