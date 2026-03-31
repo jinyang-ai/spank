@@ -185,13 +185,14 @@
         @media (min-width: 768px) {
             .methods {
                 display: grid;
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr auto 1fr;
                 gap: 32px;
                 align-items: start;
             }
             
             .or-divider {
-                display: none;
+                align-self: center;
+                padding: 0 16px;
             }
         }
         
