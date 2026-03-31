@@ -17,13 +17,17 @@ swiftc -o "$APP_BUNDLE/Contents/MacOS/SpankApp" \
     -target arm64-apple-macosx13.0 \
     -framework SwiftUI \
     -framework AppKit \
+    -framework AVFoundation \
     -parse-as-library \
     SpankApp/SpankApp.swift
 
 # Copy resources
 cp SpankApp/Info.plist "$APP_BUNDLE/Contents/"
-cp SpankApp/sound.mp3 "$APP_BUNDLE/Contents/Resources/"
 echo -n "APPL????" > "$APP_BUNDLE/Contents/PkgInfo"
+
+# Copy sounds folder
+echo "Copying sounds..."
+cp -R SpankApp/sounds "$APP_BUNDLE/Contents/Resources/"
 
 # Include spank binary
 if [[ -f /usr/local/bin/spank ]]; then
