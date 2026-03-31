@@ -1,0 +1,22 @@
+[
+  {"id": "00_Ow", "name": "Ow!", "emoji": "😣"},
+  {"id": "01_Ouch", "name": "Ouch!", "emoji": "😫"},
+  {"id": "02_Owwie", "name": "Owwie!", "emoji": "🥺"},
+  {"id": "03_Hey_that_hurts", "name": "Hey, that hurts!", "emoji": "😤"},
+  {"id": "04_Ow_stop_it", "name": "Ow, stop it!", "emoji": "🛑"},
+  {"id": "05_What_was_that_for", "name": "What was that for?!", "emoji": "😠"},
+  {"id": "06_Ow_ow_ow", "name": "Ow ow ow!", "emoji": "😵"},
+  {"id": "07_Hey", "name": "Hey!", "emoji": "👋"},
+  {"id": "08_Yowch", "name": "Yowch!", "emoji": "🔥"},
+  {"id": "09_That_stings", "name": "That stings!", "emoji": "🐝"},
+  {"id": "halo-00", "name": "Spartan Down", "emoji": "⚔️"},
+  {"id": "halo-01", "name": "Wort Wort Wort", "emoji": "👽"},
+  {"id": "halo-02", "name": "Shield Break", "emoji": "🛡️"},
+  {"id": "halo-03", "name": "Betrayal!", "emoji": "🗡️"},
+  {"id": "halo-04", "name": "Lost the Lead", "emoji": "📉"},
+  {"id": "halo-05", "name": "Flag Dropped", "emoji": "🚩"},
+  {"id": "halo-06", "name": "Game Over", "emoji": "☠️"},
+  {"id": "halo-07", "name": "Respawning...", "emoji": "🔄"},
+  {"id": "halo-08", "name": "Killed by Guardians", "emoji": "⚡"},
+  {"id": "ma-ka-bhosda-aag", "name": "Gaali Mode", "emoji": "🤬"}
+]
