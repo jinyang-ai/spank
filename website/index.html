@@ -517,20 +517,110 @@
             opacity: 0.5;
         }
 
-        /* Responsive */
+        /* Responsive - Tablet */
         @media (max-width: 900px) {
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .container { padding: 0 20px; }
+            section { padding: 80px 0; }
+            
+            .hero { padding-top: 100px; min-height: auto; padding-bottom: 60px; }
+            .hero h1 { font-size: clamp(2rem, 6vw, 3.5rem); }
+            .hero-sub { font-size: 1.1rem; max-width: 100%; }
+            .hero-content { max-width: 100%; }
+            
             .floating-peach { display: none; }
+            
+            .hook p { font-size: 1.3rem; }
+            
+            .section-header h2 { font-size: 2rem; }
+            
+            .features-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .feature-card { padding: 24px; }
+            .feature-desc { font-size: 0.9rem; }
+            
+            .install-methods { max-width: 100%; }
+            .method-header { padding: 16px 20px; }
+            .method-content { padding: 0 20px 20px; }
+            
+            .code-block { font-size: 0.75rem; padding: 14px 16px; }
+            
+            .faq-q { font-size: 1rem; padding: 20px 0; }
+            .faq-a { font-size: 0.9rem; }
+            
+            footer { padding: 60px 0; }
         }
 
+        /* Responsive - Mobile */
         @media (max-width: 600px) {
-            section { padding: 80px 0; }
+            body { font-size: 16px; }
+            .container { padding: 0 16px; }
+            section { padding: 60px 0; }
+            
+            nav { padding: 16px 0; }
             .nav-links { display: none; }
-            .hero h1 { font-size: 2.2rem; }
-            .hero-sub { font-size: 1.15rem; }
-            .features-grid { grid-template-columns: 1fr; }
-            .hero-cta { flex-direction: column; align-items: flex-start; }
-            .btn { width: 100%; justify-content: center; }
+            .logo { font-size: 1.1rem; }
+            
+            .hero { padding-top: 80px; padding-bottom: 40px; }
+            .hero-eyebrow { font-size: 0.75rem; margin-bottom: 16px; }
+            .hero h1 { font-size: 1.85rem; margin-bottom: 16px; line-height: 1.15; }
+            .hero-sub { font-size: 1rem; margin-bottom: 28px; line-height: 1.5; }
+            .hero-cta { flex-direction: column; align-items: stretch; width: 100%; gap: 12px; }
+            .btn { width: 100%; justify-content: center; padding: 14px 24px; font-size: 0.95rem; }
+            .hero-note { font-size: 0.8rem; margin-top: 20px; }
+            
+            .hook { padding: 50px 0; }
+            .hook p { font-size: 1.1rem; line-height: 1.5; }
+            
+            .section-header { margin-bottom: 40px; }
+            .section-header h2 { font-size: 1.6rem; margin-bottom: 12px; }
+            .section-header p { font-size: 0.95rem; }
+            
+            .install-methods { gap: 10px; }
+            .method { border-radius: 12px; }
+            .method-header { padding: 14px 16px; gap: 12px; }
+            .method-icon { width: 38px; height: 38px; border-radius: 10px; font-size: 1rem; }
+            .method-title { font-size: 0.95rem; }
+            .method-desc { font-size: 0.8rem; }
+            .method-badge { font-size: 0.65rem; padding: 4px 8px; }
+            .method-content { padding: 0 16px 16px; }
+            
+            .step { gap: 12px; margin-top: 16px; }
+            .step-num { width: 24px; height: 24px; font-size: 0.8rem; }
+            .step-title { font-size: 0.95rem; }
+            .step-desc { font-size: 0.85rem; }
+            
+            .code-block { 
+                font-size: 0.7rem; 
+                padding: 12px 14px; 
+                border-radius: 10px;
+                white-space: pre-wrap;
+                word-break: break-all;
+            }
+            .code-hint { font-size: 0.75rem; }
+            
+            .features-grid { grid-template-columns: 1fr; gap: 12px; }
+            .feature-card { padding: 20px; border-radius: 14px; }
+            .feature-icon { font-size: 1.5rem; margin-bottom: 12px; }
+            .feature-title { font-size: 1rem; }
+            .feature-desc { font-size: 0.9rem; }
+            
+            .faq-list { gap: 0; }
+            .faq-item { border-radius: 0; }
+            .faq-q { font-size: 0.95rem; padding: 18px 0; }
+            .faq-a { font-size: 0.9rem; padding-bottom: 18px; }
+            .faq-a code { font-size: 0.7rem; padding: 12px; white-space: pre-wrap; word-break: break-all; }
+            
+            footer { padding: 50px 0; }
+            .footer-peach { font-size: 3rem; margin-bottom: 20px; }
+            .footer-credit { font-size: 0.85rem; }
+            .footer-signoff { font-size: 0.95rem; }
+        }
+
+        /* Responsive - Small Mobile */
+        @media (max-width: 380px) {
+            .hero h1 { font-size: 1.6rem; }
+            .hero-sub { font-size: 0.95rem; }
+            .section-header h2 { font-size: 1.4rem; }
+            .code-block { font-size: 0.65rem; }
         }
     </style>
 </head>
