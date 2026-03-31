@@ -21,10 +21,6 @@
 
         html {
             scroll-behavior: smooth;
-            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 100 100'><text y='.9em' font-size='80'>👋</text></svg>") 16 16, auto;
-        }
-        html.slapping {
-            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 100 100'><text y='.9em' font-size='80'>✋</text></svg>") 16 16, auto;
         }
 
         body {
@@ -141,6 +137,30 @@
             max-width: 560px;
             margin: 0 auto;
         }
+        
+        /* Two-column layout on desktop */
+        .two-col-wrapper {
+            display: block;
+            padding: 80px 24px;
+        }
+        
+        @media (min-width: 900px) {
+            .two-col-wrapper {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 48px;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 80px 48px;
+                align-items: start;
+            }
+            
+            .two-col-wrapper section {
+                padding: 0;
+                margin: 0;
+                max-width: none;
+            }
+        }
 
         h2 {
             font-family: 'Playfair Display', serif;
@@ -165,7 +185,7 @@
         .feature-text h3 { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
         .feature-text p { font-size: 0.85rem; color: var(--text-light); }
 
-        /* Install Methods */
+        /* Install Methods - Always open cards */
         .methods { display: flex; flex-direction: column; gap: 10px; }
         
         .method {
@@ -173,7 +193,6 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.6);
             border-radius: 14px;
-            overflow: hidden;
         }
         
         .method-header {
@@ -181,8 +200,6 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            cursor: pointer;
-            user-select: none;
         }
         
         .method-icon {
@@ -198,7 +215,6 @@
         }
         .method-icon.terminal { background: var(--text); color: #4ade80; }
         .method-icon.ai { background: linear-gradient(135deg, var(--accent) 0%, #FF8F6B 100%); color: white; }
-        .method-icon.dmg { background: var(--peach-light); color: var(--text); }
         
         .method-info { flex: 1; }
         .method-title { font-weight: 600; font-size: 0.95rem; }
@@ -215,27 +231,23 @@
             color: var(--accent);
         }
         
-        .method-arrow {
-            color: var(--text-light);
-            transition: transform 0.2s;
-            font-size: 0.75rem;
-        }
-        .method.open .method-arrow { transform: rotate(180deg); }
-        
         .method-content {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 18px;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-        .method.open .method-content { 
-            max-height: 400px;
             padding: 0 18px 18px;
         }
         
-        .method-header:hover { background: rgba(255,255,255,0.3); }
-        .method-header { transition: background 0.2s; border-radius: 14px; }
-        .method.open .method-header { border-radius: 14px 14px 0 0; }
+        .install-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        .install-hint kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 4px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.8em;
+        }
 
         .code {
             background: var(--text);
@@ -368,134 +380,98 @@
         <div class="scroll-hint">↓</div>
     </div>
 
-    <section>
-        <h2>The <em>Features</em></h2>
-        <div class="features">
-            <div class="feature">
-                <span class="feature-icon">🎭</span>
-                <div class="feature-text">
-                    <h3>21 Sounds</h3>
-                    <p>Pain noises, Halo screams, Hindi expletives. Your MacBook finally speaks your language.</p>
+    <div class="two-col-wrapper" id="install">
+        <section>
+            <h2>The <em>Features</em></h2>
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🎭</span>
+                    <div class="feature-text">
+                        <h3>21 Sounds</h3>
+                        <p>Pain noises, Halo screams, Hindi expletives. Your MacBook finally speaks your language.</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📊</span>
+                    <div class="feature-text">
+                        <h3>Volume Scaling</h3>
+                        <p>Gentle tap? Quiet. Full palm strike? Maximum volume. The accelerometer knows.</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🍑</span>
+                    <div class="feature-text">
+                        <h3>Menu Bar App</h3>
+                        <p>Lives as a peach in your menu bar. Pick sounds, adjust sensitivity.</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">⚡</span>
+                    <div class="feature-text">
+                        <h3>Auto-Start</h3>
+                        <p>Launches at login. Your coping mechanism, always ready.</p>
+                    </div>
                 </div>
             </div>
-            <div class="feature">
-                <span class="feature-icon">📊</span>
-                <div class="feature-text">
-                    <h3>Volume Scaling</h3>
-                    <p>Gentle tap? Quiet. Full palm strike? Maximum volume. The accelerometer knows.</p>
-                </div>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">🍑</span>
-                <div class="feature-text">
-                    <h3>Menu Bar App</h3>
-                    <p>Lives as a peach in your menu bar. Pick sounds, adjust sensitivity.</p>
-                </div>
-            </div>
-            <div class="feature">
-                <span class="feature-icon">⚡</span>
-                <div class="feature-text">
-                    <h3>Auto-Start</h3>
-                    <p>Launches at login. Your coping mechanism, always ready.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="install">
-        <h2>Get <em>Spank</em></h2>
-        <div class="methods">
-            <!-- Terminal Method -->
-            <div class="method open">
-                <div class="method-header" onclick="toggleMethod(this)">
-                    <div class="method-icon terminal">&gt;_</div>
-                    <div class="method-info">
-                        <div class="method-title">Terminal</div>
-                        <div class="method-desc">One command. Paste and pray.</div>
+        <section>
+            <h2>Get <em>Spank</em></h2>
+            <div class="methods">
+                <!-- Terminal Method -->
+                <div class="method">
+                    <div class="method-header">
+                        <div class="method-icon terminal">&gt;_</div>
+                        <div class="method-info">
+                            <div class="method-title">Terminal</div>
+                            <div class="method-desc">One command. Paste and pray.</div>
+                        </div>
+                        <span class="method-badge">Fastest</span>
                     </div>
-                    <span class="method-badge">Fastest</span>
-                    <span class="method-arrow">▼</span>
+                    <div class="method-content">
+                        <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
+                        <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
+                        <span class="code-hint">Click to copy · Enter password when prompted</span>
+                    </div>
                 </div>
-                <div class="method-content">
-                    <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
-                    <span class="code-hint">Click to copy · Enter password when prompted</span>
-                </div>
-            </div>
 
-            <!-- AI Agent Method -->
-            <div class="method">
-                <div class="method-header" onclick="toggleMethod(this)">
-                    <div class="method-icon ai">AI</div>
-                    <div class="method-info">
-                        <div class="method-title">AI Agent</div>
-                        <div class="method-desc">Make your robot do it.</div>
-                    </div>
-                    <span class="method-badge">Laziest</span>
-                    <span class="method-arrow">▼</span>
-                </div>
-                <div class="method-content">
-                    <div class="step">
-                        <span class="step-num">1</span>
-                        <div class="step-content">
-                            <div class="step-title">Open your AI overlord</div>
-                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
+                <!-- AI Agent Method -->
+                <div class="method">
+                    <div class="method-header">
+                        <div class="method-icon ai">AI</div>
+                        <div class="method-info">
+                            <div class="method-title">AI Agent</div>
+                            <div class="method-desc">Make your robot do it.</div>
                         </div>
+                        <span class="method-badge">Laziest</span>
                     </div>
-                    <div class="step">
-                        <span class="step-num">2</span>
-                        <div class="step-content">
-                            <div class="step-title">Tell it:</div>
-                            <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
+                    <div class="method-content">
+                        <div class="step">
+                            <span class="step-num">1</span>
+                            <div class="step-content">
+                                <div class="step-title">Open your AI overlord</div>
+                                <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-num">3</span>
-                        <div class="step-content">
-                            <div class="step-title">Type password, feel superior</div>
-                            <div class="step-desc">Watch your AI minion do all the work.</div>
+                        <div class="step">
+                            <span class="step-num">2</span>
+                            <div class="step-content">
+                                <div class="step-title">Tell it:</div>
+                                <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DMG Method -->
-            <div class="method">
-                <div class="method-header" onclick="toggleMethod(this)">
-                    <div class="method-icon dmg">📦</div>
-                    <div class="method-info">
-                        <div class="method-title">Download DMG</div>
-                        <div class="method-desc">The old-fashioned way.</div>
-                    </div>
-                    <span class="method-badge">Respect</span>
-                    <span class="method-arrow">▼</span>
-                </div>
-                <div class="method-content">
-                    <a href="https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.dmg" class="cta" download>
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        Download Spank.dmg
-                    </a>
-                    <div class="step" style="margin-top: 16px;">
-                        <span class="step-num">1</span>
-                        <div class="step-content">
-                            <div class="step-desc">Open DMG, drag to Applications like it's 2008</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-num">2</span>
-                        <div class="step-content">
-                            <div class="step-desc">Right-click → Open → Open (Apple doesn't trust us. Fair.)</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <span class="step-num">3</span>
-                        <div class="step-content">
-                            <div class="step-desc">Click 🍑 → Start Daemon → Password → Slap away</div>
+                        <div class="step">
+                            <span class="step-num">3</span>
+                            <div class="step-content">
+                                <div class="step-title">Type password, feel superior</div>
+                                <div class="step-desc">Watch your AI minion do all the work.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <section>
         <h2><em>Questions</em></h2>
@@ -546,15 +522,6 @@
                 el.classList.add('copied');
                 setTimeout(() => el.classList.remove('copied'), 2000);
             });
-        }
-
-        function toggleMethod(header) {
-            const method = header.closest('.method');
-            const wasOpen = method.classList.contains('open');
-            // Close all methods
-            document.querySelectorAll('.method').forEach(m => m.classList.remove('open'));
-            // Open clicked one if it wasn't already open
-            if (!wasOpen) method.classList.add('open');
         }
 
         const canvas = document.getElementById('particle-canvas');
@@ -614,7 +581,7 @@
 
         let ready = true;
         function slap(x, y, t) {
-            if (t.closest('a,button,.cta,.faq-q,.code,.method-header')) return;
+            if (t.closest('a,button,.cta,.faq-q,.code')) return;
             if (!ready) return;
             ready = false;
 
@@ -634,8 +601,6 @@
             setTimeout(() => ready = true, 200);
         }
 
-        document.addEventListener('mousedown', () => document.documentElement.classList.add('slapping'));
-        document.addEventListener('mouseup', () => document.documentElement.classList.remove('slapping'));
         document.addEventListener('click', e => slap(e.clientX, e.clientY, e.target));
         document.addEventListener('touchstart', e => {
             const t = e.touches[0];
