@@ -68,6 +68,7 @@ cat > /Library/LaunchDaemons/com.aj.spank.plist << 'EOF'
         <string>0.8</string>
         <string>--cooldown</string>
         <string>2000</string>
+        <string>--volume-scaling</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

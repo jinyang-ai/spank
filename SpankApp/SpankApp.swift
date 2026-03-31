@@ -365,6 +365,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 <string>\(String(format: "%.1f", threshold))</string>
                 <string>--cooldown</string>
                 <string>\(cooldown)</string>
+                <string>--volume-scaling</string>
             </array>
             <key>RunAtLoad</key><true/>
             <key>KeepAlive</key><true/>
