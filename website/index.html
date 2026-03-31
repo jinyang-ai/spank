@@ -377,6 +377,23 @@
             font-size: 0.75rem;
             margin-top: 12px;
             font-family: 'SF Mono', monospace;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+        .faq-a code:hover { background: #1a1a1a; }
+        .faq-a code.copied::after {
+            content: 'Copied!';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--peach);
+            color: var(--text);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-family: 'DM Sans', sans-serif;
         }
 
         footer {
@@ -501,7 +518,7 @@
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="toggleFaq(this)">Apple says "unidentified developer"</div>
-            <div class="faq-a">Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal: <code>xattr -cr /Applications/Spank.app</code></div>
+            <div class="faq-a">Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal: <code onclick="copyCode(this)">xattr -cr /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="toggleFaq(this)">I slapped it and nothing happened</div>
@@ -521,11 +538,11 @@
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="toggleFaq(this)">How do I uninstall this chaos?</div>
-            <div class="faq-a">Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
+            <div class="faq-a">Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option: <code onclick="copyCode(this)">sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
             <div class="faq-q" onclick="toggleFaq(this)">Can I add my ex's voicemail as a sound?</div>
-            <div class="faq-a">Absolutely. Drop any .mp3 into <code>/Users/Shared/spank-sounds/</code> and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.</div>
+            <div class="faq-a">Absolutely. Drop any .mp3 into <code onclick="copyCode(this)">/Users/Shared/spank-sounds/</code> and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.</div>
         </div>
     </section>
 
