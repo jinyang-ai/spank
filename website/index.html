@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFFAF5">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Spank — Your MacBook Likes It Rough</title>
     <meta name="description" content="An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
@@ -21,37 +23,51 @@
 
         html {
             scroll-behavior: smooth;
-            background: var(--peach-light);
+            overscroll-behavior: none;
         }
 
         body {
             font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(180deg, var(--cream) 0%, #FFF5EE 50%, var(--peach-light) 100%);
-            background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
+            overscroll-behavior: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Bulletproof background - extends beyond viewport for overscroll */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50vh;
+            left: -50vw;
+            right: -50vw;
+            bottom: -50vh;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--cream) 20%, #FFF5EE 50%, var(--peach-light) 80%, var(--peach-light) 100%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         a, button, .clickable { cursor: pointer !important; }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-20px) rotate(2deg); }
+            0%, 100% { transform: translateY(0) rotate(-2deg) translateZ(0); }
+            50% { transform: translateY(-20px) rotate(2deg) translateZ(0); }
         }
         @keyframes shake {
-            0%, 100% { transform: translate(0, 0); }
-            20% { transform: translate(-5px, -3px); }
-            40% { transform: translate(5px, 2px); }
-            60% { transform: translate(-3px, 2px); }
-            80% { transform: translate(3px, -2px); }
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            20% { transform: translate3d(-5px, -3px, 0); }
+            40% { transform: translate3d(5px, 2px, 0); }
+            60% { transform: translate3d(-3px, 2px, 0); }
+            80% { transform: translate3d(3px, -2px, 0); }
         }
         @keyframes jiggle {
-            0%, 100% { transform: scale(1) rotate(0); }
-            25% { transform: scale(1.15) rotate(-8deg); }
-            50% { transform: scale(0.9) rotate(5deg); }
-            75% { transform: scale(1.05) rotate(-3deg); }
+            0%, 100% { transform: scale(1) rotate(0) translateZ(0); }
+            25% { transform: scale(1.15) rotate(-8deg) translateZ(0); }
+            50% { transform: scale(0.9) rotate(5deg) translateZ(0); }
+            75% { transform: scale(1.05) rotate(-3deg) translateZ(0); }
         }
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -59,9 +75,16 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
 
-        body.shaking { animation: shake 0.4s ease-out; }
+        body.shaking { 
+            animation: shake 0.4s ease-out;
+        }
 
-        #particle-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+        #particle-canvas { 
+            position: fixed; 
+            inset: 0; 
+            pointer-events: none; 
+            z-index: 9999;
+        }
 
         .hero {
             min-height: 100vh;
@@ -78,9 +101,10 @@
             font-size: clamp(100px, 25vw, 180px);
             line-height: 1;
             animation: float 4s ease-in-out infinite;
-            filter: drop-shadow(0 20px 40px rgba(255, 107, 74, 0.25));
+            text-shadow: 0 20px 40px rgba(255, 107, 74, 0.25);
             margin-bottom: 24px;
             user-select: none;
+            will-change: transform;
         }
         .peach:hover, .peach.slapped { animation: jiggle 0.5s ease-out; }
 
@@ -114,10 +138,22 @@
             font-size: 1rem;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
             animation: fadeUp 0.8s ease-out 0.2s both;
+            position: relative;
         }
-        .cta:hover { transform: translateY(-3px); box-shadow: 0 16px 32px rgba(0,0,0,0.12); }
+        .cta::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        .cta:hover { transform: translateY(-3px); }
+        .cta:hover::after { opacity: 1; }
         .cta svg { width: 18px; height: 18px; }
 
         .note {
@@ -132,6 +168,7 @@
             bottom: 32px;
             font-size: 1.5rem;
             animation: pulse 2s infinite;
+            will-change: opacity;
         }
 
         section {
@@ -165,8 +202,7 @@
             display: flex;
             gap: 14px;
             padding: 18px;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.85);
             border-radius: 14px;
             border: 1px solid rgba(255,255,255,0.6);
         }
@@ -187,8 +223,7 @@
         }
         
         .method {
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(8px);
+            background: rgba(255,255,255,0.85);
             border: 1px solid rgba(255,255,255,0.6);
             border-radius: 14px;
         }
@@ -309,7 +344,11 @@
             font-size: 0.9rem;
         }
 
-        .faq-item { border-bottom: 1px solid rgba(0,0,0,0.08); padding: 20px 0; }
+        .faq-item { 
+            border-bottom: 1px solid rgba(0,0,0,0.08); 
+            padding: 20px 0;
+            contain: layout style;
+        }
         .faq-item:last-child { border: none; }
         .faq-q {
             font-weight: 600;
@@ -319,7 +358,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        .faq-q::after { content: '+'; font-size: 1.3rem; font-weight: 300; transition: transform 0.3s; }
+        .faq-q::after { 
+            content: '+'; 
+            font-size: 1.3rem; 
+            font-weight: 300; 
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
         .faq-item.open .faq-q::after { transform: rotate(45deg); }
         .faq-a { display: none; padding-top: 12px; font-size: 0.9rem; color: var(--text-light); }
         .faq-item.open .faq-a { display: block; }
@@ -354,12 +399,14 @@
             position: fixed;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(255, 107, 74, 0.25) 0%, transparent 70%);
-            transform: scale(0);
-            animation: ripple 0.5s ease-out forwards;
             pointer-events: none;
             z-index: 9998;
+            will-change: transform, opacity;
         }
-        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+        @keyframes ripple { 
+            from { transform: scale(0) translateZ(0); opacity: 1; }
+            to { transform: scale(4) translateZ(0); opacity: 0; } 
+        }
 
         @media (max-width: 600px) {
             .hero { padding: 48px 24px; }
@@ -490,30 +537,72 @@
     </footer>
 
     <script>
-        function copyCode(el) {
-            navigator.clipboard.writeText(el.textContent).then(() => {
-                el.classList.add('copied');
-                setTimeout(() => el.classList.remove('copied'), 2000);
-            });
-        }
-
-        function toggleFaq(el) {
-            const item = el.closest('.faq-item');
-            const wasOpen = item.classList.contains('open');
-            // Close all FAQ items
-            document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('open'));
-            // Open clicked one if it wasn't already open
-            if (!wasOpen) item.classList.add('open');
-        }
-
+        // Cache DOM elements once at startup
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-        resize(); addEventListener('resize', resize);
+        const slapSound = document.getElementById('slap-sound');
+        const peachEl = document.querySelector('.peach');
+        const body = document.body;
 
+        // Particle system state
+        let particles = [];
+        let animationId = null;
+
+        // Throttled resize with RAF
+        let resizeScheduled = false;
+        function resize() {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+        }
+        resize();
+        
+        addEventListener('resize', () => {
+            if (!resizeScheduled) {
+                resizeScheduled = true;
+                requestAnimationFrame(() => {
+                    resize();
+                    resizeScheduled = false;
+                });
+            }
+        });
+
+        // Ripple pool - reuse DOM elements instead of create/destroy
+        const RIPPLE_POOL_SIZE = 5;
+        const ripplePool = [];
+        let rippleIndex = 0;
+
+        (function initRipplePool() {
+            for (let i = 0; i < RIPPLE_POOL_SIZE; i++) {
+                const r = document.createElement('div');
+                r.className = 'click-ripple';
+                r.style.cssText = 'width:60px;height:60px;margin:-30px;display:none;';
+                body.appendChild(r);
+                ripplePool.push(r);
+            }
+        })();
+
+        function ripple(x, y) {
+            const r = ripplePool[rippleIndex];
+            rippleIndex = (rippleIndex + 1) % RIPPLE_POOL_SIZE;
+            
+            r.style.left = x + 'px';
+            r.style.top = y + 'px';
+            r.style.display = 'block';
+            
+            // Restart animation
+            r.style.animation = 'none';
+            r.offsetHeight; // Force reflow
+            r.style.animation = 'ripple 0.5s ease-out forwards';
+            
+            setTimeout(() => { r.style.display = 'none'; }, 500);
+        }
+
+        // Particle class
         class Particle {
             constructor(x, y) {
+                this.reset(x, y);
+            }
+            reset(x, y) {
                 this.x = x; this.y = y;
                 this.size = Math.random() * 22 + 10;
                 this.vx = (Math.random() - 0.5) * 12;
@@ -524,41 +613,98 @@
                 this.rot = Math.random() * 360;
                 this.rotSpeed = (Math.random() - 0.5) * 10;
                 this.emoji = ['🍑','✨','💥','⭐','😵'][Math.floor(Math.random() * 5)];
+                this.alive = true;
             }
             update() {
                 this.vy += this.gravity;
-                this.x += this.vx; this.y += this.vy;
+                this.x += this.vx;
+                this.y += this.vy;
                 this.opacity -= this.decay;
                 this.rot += this.rotSpeed;
+                if (this.opacity <= 0) this.alive = false;
             }
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rot * Math.PI / 180);
                 ctx.globalAlpha = this.opacity;
-                ctx.font = `${this.size}px serif`;
+                ctx.font = this.size + 'px serif';
                 ctx.textAlign = 'center';
                 ctx.fillText(this.emoji, 0, 0);
                 ctx.restore();
             }
         }
 
+        // Particle pool for reuse
+        const particlePool = [];
+        const PARTICLE_POOL_SIZE = 60;
+
+        function getParticle(x, y) {
+            for (let i = 0; i < particlePool.length; i++) {
+                if (!particlePool[i].alive) {
+                    particlePool[i].reset(x, y);
+                    return particlePool[i];
+                }
+            }
+            if (particlePool.length < PARTICLE_POOL_SIZE) {
+                const p = new Particle(x, y);
+                particlePool.push(p);
+                return p;
+            }
+            particlePool[0].reset(x, y);
+            return particlePool[0];
+        }
+
+        // Animation loop - only runs when particles exist
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles = particles.filter(p => p.opacity > 0);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
+            
+            let activeCount = 0;
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                if (p.alive) {
+                    p.update();
+                    p.draw();
+                    activeCount++;
+                }
+            }
+            
+            if (activeCount > 0) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                animationId = null;
+                particles = [];
+            }
         }
-        animate();
 
-        function spawn(x, y) { for (let i = 0; i < 12; i++) particles.push(new Particle(x, y)); }
+        function startAnimation() {
+            if (animationId === null) {
+                animationId = requestAnimationFrame(animate);
+            }
+        }
 
-        function ripple(x, y) {
-            const r = document.createElement('div');
-            r.className = 'click-ripple';
-            r.style.cssText = `left:${x}px;top:${y}px;width:60px;height:60px;margin:-30px`;
-            document.body.appendChild(r);
-            setTimeout(() => r.remove(), 500);
+        function spawn(x, y) {
+            for (let i = 0; i < 12; i++) {
+                particles.push(getParticle(x, y));
+            }
+            startAnimation();
+        }
+
+        function copyCode(el) {
+            navigator.clipboard.writeText(el.textContent).then(() => {
+                el.classList.add('copied');
+                setTimeout(() => el.classList.remove('copied'), 2000);
+            });
+        }
+
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const wasOpen = item.classList.contains('open');
+            const allFaqs = document.querySelectorAll('.faq-item');
+            for (let i = 0; i < allFaqs.length; i++) {
+                allFaqs[i].classList.remove('open');
+            }
+            if (!wasOpen) item.classList.add('open');
         }
 
         let ready = true;
@@ -567,26 +713,25 @@
             if (!ready) return;
             ready = false;
 
-            document.getElementById('slap-sound').currentTime = 0;
-            document.getElementById('slap-sound').play().catch(() => {});
+            slapSound.currentTime = 0;
+            slapSound.play().catch(() => {});
 
-            document.body.classList.add('shaking');
-            setTimeout(() => document.body.classList.remove('shaking'), 400);
+            body.classList.add('shaking');
+            setTimeout(() => body.classList.remove('shaking'), 400);
 
             spawn(x, y);
             ripple(x, y);
 
-            const p = document.querySelector('.peach');
-            p.classList.add('slapped');
-            setTimeout(() => p.classList.remove('slapped'), 500);
+            peachEl.classList.add('slapped');
+            setTimeout(() => peachEl.classList.remove('slapped'), 500);
 
-            setTimeout(() => ready = true, 200);
+            setTimeout(() => { ready = true; }, 200);
         }
 
         document.addEventListener('click', e => slap(e.clientX, e.clientY, e.target));
         document.addEventListener('touchstart', e => {
             const t = e.touches[0];
-            slap(t.clientX, t.clientY, document.elementFromPoint(t.clientX, t.clientY) || document.body);
+            slap(t.clientX, t.clientY, document.elementFromPoint(t.clientX, t.clientY) || body);
         }, { passive: true });
     </script>
 </body>
