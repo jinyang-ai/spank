@@ -133,13 +133,14 @@
         }
 
         section {
-            padding: 80px 24px;
+            padding: 100px 32px;
             max-width: 560px;
             margin: 0 auto;
         }
         
         #install {
             max-width: 95%;
+            padding: 100px 32px;
         }
         
         @media (min-width: 1400px) {
@@ -152,7 +153,7 @@
             font-family: 'Playfair Display', serif;
             font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 400;
-            margin-bottom: 32px;
+            margin-bottom: 48px;
             text-align: center;
         }
         h2 em { font-style: italic; }
@@ -201,7 +202,7 @@
         }
         
         .method-header {
-            padding: 0 18px 16px;
+            padding: 0 20px 20px;
             display: flex;
             align-items: center;
             gap: 14px;
@@ -237,13 +238,13 @@
         }
         
         .method-content {
-            padding: 0 18px 18px;
+            padding: 0 20px 20px;
         }
         
         .install-hint {
             font-size: 0.85rem;
             color: var(--text-light);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
         .install-hint kbd {
             display: inline-block;
@@ -257,14 +258,14 @@
         .code {
             background: var(--text);
             border-radius: 10px;
-            padding: 14px;
+            padding: 16px;
             font-family: 'SF Mono', monospace;
             font-size: 0.7rem;
             color: var(--peach-light);
             text-align: left;
             overflow-x: auto;
             cursor: pointer;
-            margin: 12px 0 6px;
+            margin: 0 0 8px;
             position: relative;
         }
         .code:hover { background: #1a1a1a; }
@@ -283,7 +284,7 @@
         }
         .code-hint { font-size: 0.75rem; color: var(--text-light); }
         
-        .step { display: flex; gap: 12px; margin-top: 14px; }
+        .step { display: flex; gap: 12px; margin-top: 16px; }
         .step-num {
             width: 24px; height: 24px;
             border-radius: 50%;
@@ -306,7 +307,7 @@
             font-size: 0.9rem;
         }
 
-        .faq-item { border-bottom: 1px solid rgba(0,0,0,0.08); padding: 18px 0; }
+        .faq-item { border-bottom: 1px solid rgba(0,0,0,0.08); padding: 20px 0; }
         .faq-item:last-child { border: none; }
         .faq-q {
             font-weight: 600;
@@ -318,16 +319,16 @@
         }
         .faq-q::after { content: '+'; font-size: 1.3rem; font-weight: 300; transition: transform 0.3s; }
         .faq-item.open .faq-q::after { transform: rotate(45deg); }
-        .faq-a { display: none; padding-top: 10px; font-size: 0.9rem; color: var(--text-light); }
+        .faq-a { display: none; padding-top: 12px; font-size: 0.9rem; color: var(--text-light); }
         .faq-item.open .faq-a { display: block; }
         .faq-a code {
             display: block;
             background: var(--text);
             color: var(--peach-light);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 0.75rem;
-            margin-top: 10px;
+            margin-top: 12px;
             font-family: 'SF Mono', monospace;
         }
 
@@ -359,10 +360,11 @@
         @keyframes ripple { to { transform: scale(4); opacity: 0; } }
 
         @media (max-width: 600px) {
-            .hero { padding: 48px 20px; }
-            section { padding: 60px 20px; }
-            .install-box { padding: 22px; }
-            .code { font-size: 0.6rem; }
+            .hero { padding: 48px 24px; }
+            section { padding: 80px 24px; }
+            #install { padding: 80px 24px; }
+            h2 { margin-bottom: 32px; }
+            .code { font-size: 0.6rem; padding: 12px; }
             .scroll-hint { display: none; }
         }
     </style>
