@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Spank — Your MacBook Likes It Rough</title>
     <meta name="description" content="An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
@@ -21,11 +21,13 @@
 
         html {
             scroll-behavior: smooth;
+            background: var(--peach-light);
         }
 
         body {
             font-family: 'DM Sans', sans-serif;
             background: linear-gradient(180deg, var(--cream) 0%, #FFF5EE 50%, var(--peach-light) 100%);
+            background-attachment: fixed;
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
