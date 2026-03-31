@@ -476,35 +476,35 @@
     <section>
         <h2><em>Questions</em></h2>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why does it need my password?</div>
+            <div class="faq-q" onclick="toggleFaq(this)">Why does it need my password?</div>
             <div class="faq-a">The accelerometer requires root access because Apple doesn't want you slapping your $3000 laptop. We're not mining crypto or stealing your nudes—just detecting violence. It's open source. Trust issues? Read the code.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Apple says "unidentified developer"</div>
+            <div class="faq-q" onclick="toggleFaq(this)">Apple says "unidentified developer"</div>
             <div class="faq-a">Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal: <code>xattr -cr /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">I slapped it and nothing happened</div>
+            <div class="faq-q" onclick="toggleFaq(this)">I slapped it and nothing happened</div>
             <div class="faq-a">First, look for the 🍑 in your menu bar. If it's there, you're not slapping hard enough. This isn't a gentle caress—commit to the violence. Really smack it. Your laptop can take it. Probably.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Will this break my MacBook?</div>
+            <div class="faq-q" onclick="toggleFaq(this)">Will this break my MacBook?</div>
             <div class="faq-a">Look, the accelerometer exists to detect drops. We're just... finding alternative uses. Apple engineers did not anticipate this. That said, we are absolutely not liable for cracked screens, dented chassis, or HR complaints. Spank responsibly.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">My coworkers are staring at me</div>
+            <div class="faq-q" onclick="toggleFaq(this)">My coworkers are staring at me</div>
             <div class="faq-a">Good. Assert dominance. Maintain eye contact while slapping your laptop. If they ask questions, just say "stress relief" and slap harder. This is a conversation ender, not a conversation starter.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Intel Mac?</div>
+            <div class="faq-q" onclick="toggleFaq(this)">Intel Mac?</div>
             <div class="faq-a">No accelerometer on Intel. Apple said "you don't need to know when your laptop is being abused" and honestly they were wrong. M1/M2/M3/M4 only. Consider this your sign to upgrade.</div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I uninstall this chaos?</div>
+            <div class="faq-q" onclick="toggleFaq(this)">How do I uninstall this chaos?</div>
             <div class="faq-a">Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option: <code>sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div>
         </div>
         <div class="faq-item">
-            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I add my ex's voicemail as a sound?</div>
+            <div class="faq-q" onclick="toggleFaq(this)">Can I add my ex's voicemail as a sound?</div>
             <div class="faq-a">Absolutely. Drop any .mp3 into <code>/Users/Shared/spank-sounds/</code> and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.</div>
         </div>
     </section>
@@ -522,6 +522,15 @@
                 el.classList.add('copied');
                 setTimeout(() => el.classList.remove('copied'), 2000);
             });
+        }
+
+        function toggleFaq(el) {
+            const item = el.closest('.faq-item');
+            const wasOpen = item.classList.contains('open');
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('open'));
+            // Open clicked one if it wasn't already open
+            if (!wasOpen) item.classList.add('open');
         }
 
         const canvas = document.getElementById('particle-canvas');
