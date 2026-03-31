@@ -622,9 +622,134 @@
             .section-header h2 { font-size: 1.4rem; }
             .code-block { font-size: 0.65rem; }
         }
+
+        /* ============================================
+           INTERACTIVE ANIMATIONS
+           ============================================ */
+
+        /* Custom Cursor */
+        html {
+            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 100 100'><text y='.9em' font-size='80'>👋</text></svg>") 16 16, auto;
+        }
+
+        html.slapping {
+            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 100 100'><text y='.9em' font-size='80'>✋</text></svg>") 16 16, auto;
+        }
+
+        /* Keep normal cursor for interactive elements */
+        a, button, .btn, .method-header, .faq-q, .code-block {
+            cursor: pointer !important;
+        }
+
+        /* Screen Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0); }
+            10% { transform: translate(-8px, -4px) rotate(-1deg); }
+            20% { transform: translate(8px, 4px) rotate(1deg); }
+            30% { transform: translate(-6px, 2px) rotate(-0.5deg); }
+            40% { transform: translate(6px, -2px) rotate(0.5deg); }
+            50% { transform: translate(-4px, 4px) rotate(-0.5deg); }
+            60% { transform: translate(4px, -4px) rotate(0.5deg); }
+            70% { transform: translate(-2px, 2px) rotate(0); }
+            80% { transform: translate(2px, -2px) rotate(0); }
+            90% { transform: translate(-1px, 1px) rotate(0); }
+        }
+
+        body.shaking {
+            animation: shake 0.5s ease-out;
+        }
+
+        /* Peach Jiggle Animation */
+        @keyframes jiggle {
+            0%, 100% { transform: rotate(0) scale(1); }
+            15% { transform: rotate(-12deg) scale(1.1); }
+            30% { transform: rotate(10deg) scale(0.95); }
+            45% { transform: rotate(-8deg) scale(1.05); }
+            60% { transform: rotate(6deg) scale(0.98); }
+            75% { transform: rotate(-3deg) scale(1.02); }
+            90% { transform: rotate(1deg) scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) rotate(-2deg); }
+            50% { transform: translateY(-52%) rotate(2deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 107, 74, 0.4)); }
+        }
+
+        /* Logo hover effect */
+        .logo {
+            transition: transform 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo:hover {
+            animation: jiggle 0.6s ease-out;
+        }
+
+        .logo.slapped {
+            animation: jiggle 0.6s ease-out;
+        }
+
+        /* Floating peach continuous animation */
+        .floating-peach {
+            animation: float 4s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+        }
+
+        .floating-peach.slapped {
+            animation: jiggle 0.6s ease-out, pulse-glow 3s ease-in-out infinite !important;
+        }
+
+        /* Footer peach */
+        .footer-peach {
+            display: inline-block;
+            transition: transform 0.2s;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .footer-peach:hover {
+            animation: jiggle 0.6s ease-out;
+        }
+
+        /* Canvas overlay for particles */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Click ripple effect */
+        .click-ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 74, 0.4) 0%, transparent 70%);
+            transform: scale(0);
+            animation: ripple 0.6s ease-out forwards;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
     <nav id="nav">
         <div class="container">
             <div class="logo">🍑 Spank</div>
@@ -901,6 +1026,194 @@
                 setTimeout(() => el.classList.remove('copied'), 2000);
             });
         }
+
+        // ============================================
+        // PARTICLE SYSTEM
+        // ============================================
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        // Resize canvas to window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 20 + 10;
+                this.speedX = (Math.random() - 0.5) * 15;
+                this.speedY = (Math.random() - 0.5) * 15 - 5;
+                this.gravity = 0.4;
+                this.friction = 0.98;
+                this.opacity = 1;
+                this.decay = Math.random() * 0.02 + 0.015;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 15;
+                
+                // Random emoji from set
+                const emojis = ['🍑', '✨', '💥', '⭐', '🔥', '💫', '✋'];
+                this.emoji = emojis[Math.floor(Math.random() * emojis.length)];
+            }
+
+            update() {
+                this.speedY += this.gravity;
+                this.speedX *= this.friction;
+                this.speedY *= this.friction;
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= this.decay;
+                this.rotation += this.rotationSpeed;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.emoji, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        // Animation loop
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles = particles.filter(p => p.opacity > 0);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Spawn particles at position
+        function spawnParticles(x, y, count = 15) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        // Create ripple effect
+        function createRipple(x, y) {
+            const ripple = document.createElement('div');
+            ripple.className = 'click-ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.width = '100px';
+            ripple.style.height = '100px';
+            ripple.style.marginLeft = '-50px';
+            ripple.style.marginTop = '-50px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // ============================================
+        // CLICK TO SLAP
+        // ============================================
+        let canSlap = true;
+
+        document.addEventListener('mousedown', (e) => {
+            document.documentElement.classList.add('slapping');
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            document.documentElement.classList.remove('slapping');
+        });
+
+        document.addEventListener('click', (e) => {
+            // Don't trigger on interactive elements
+            const target = e.target;
+            if (target.closest('a, button, .btn, .method-header, .faq-q, .code-block, input, textarea')) {
+                return;
+            }
+
+            if (!canSlap) return;
+            canSlap = false;
+
+            // Screen shake
+            document.body.classList.add('shaking');
+            setTimeout(() => {
+                document.body.classList.remove('shaking');
+            }, 500);
+
+            // Particle burst
+            spawnParticles(e.clientX, e.clientY, 20);
+
+            // Ripple effect
+            createRipple(e.clientX, e.clientY);
+
+            // Animate peaches
+            const logo = document.querySelector('.logo');
+            const floatingPeach = document.querySelector('.floating-peach');
+            const footerPeach = document.querySelector('.footer-peach');
+
+            [logo, floatingPeach, footerPeach].forEach(el => {
+                if (el) {
+                    el.classList.add('slapped');
+                    setTimeout(() => el.classList.remove('slapped'), 600);
+                }
+            });
+
+            // Cooldown
+            setTimeout(() => { canSlap = true; }, 300);
+        });
+
+        // ============================================
+        // TOUCH SUPPORT FOR MOBILE
+        // ============================================
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const target = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            if (target && target.closest('a, button, .btn, .method-header, .faq-q, .code-block, input, textarea')) {
+                return;
+            }
+
+            if (!canSlap) return;
+            canSlap = false;
+
+            // Screen shake
+            document.body.classList.add('shaking');
+            setTimeout(() => {
+                document.body.classList.remove('shaking');
+            }, 500);
+
+            // Particle burst
+            spawnParticles(touch.clientX, touch.clientY, 20);
+
+            // Ripple effect
+            createRipple(touch.clientX, touch.clientY);
+
+            // Animate peaches
+            const logo = document.querySelector('.logo');
+            const floatingPeach = document.querySelector('.floating-peach');
+            const footerPeach = document.querySelector('.footer-peach');
+
+            [logo, floatingPeach, footerPeach].forEach(el => {
+                if (el) {
+                    el.classList.add('slapped');
+                    setTimeout(() => el.classList.remove('slapped'), 600);
+                }
+            });
+
+            // Cooldown
+            setTimeout(() => { canSlap = true; }, 300);
+        }, { passive: true });
     </script>
 </body>
 </html>
