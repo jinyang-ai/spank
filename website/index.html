@@ -137,34 +137,6 @@
             max-width: 560px;
             margin: 0 auto;
         }
-        
-        /* Two-column layout on desktop */
-        .two-col-wrapper {
-            display: block;
-            padding: 80px 24px;
-        }
-        
-        @media (min-width: 900px) {
-            .two-col-wrapper {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 48px;
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 80px 48px;
-                align-items: start;
-            }
-            
-            .two-col-wrapper section {
-                padding: 0;
-                margin: 0;
-                max-width: none;
-            }
-            
-            .two-col-wrapper h2 {
-                text-align: left;
-            }
-        }
 
         h2 {
             font-family: 'Playfair Display', serif;
@@ -191,6 +163,14 @@
 
         /* Install Methods - Always open cards */
         .methods { display: flex; flex-direction: column; gap: 10px; }
+        
+        .or-divider {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            padding: 16px 0;
+            font-weight: 500;
+        }
         
         .method {
             background: rgba(255,255,255,0.5);
@@ -384,98 +364,64 @@
         <div class="scroll-hint">↓</div>
     </div>
 
-    <div class="two-col-wrapper" id="install">
-        <section>
-            <h2>The <em>Features</em></h2>
-            <div class="features">
-                <div class="feature">
-                    <span class="feature-icon">🎭</span>
-                    <div class="feature-text">
-                        <h3>21 Sounds</h3>
-                        <p>Pain noises, Halo screams, Hindi expletives. Your MacBook finally speaks your language.</p>
+    <section id="install">
+        <h2>Get <em>Spank</em></h2>
+        <div class="methods">
+            <!-- Terminal Method -->
+            <div class="method">
+                <div class="method-header">
+                    <div class="method-icon terminal">&gt;_</div>
+                    <div class="method-info">
+                        <div class="method-title">Terminal</div>
+                        <div class="method-desc">One command. Paste and pray.</div>
                     </div>
+                    <span class="method-badge">Fastest</span>
                 </div>
-                <div class="feature">
-                    <span class="feature-icon">📊</span>
-                    <div class="feature-text">
-                        <h3>Volume Scaling</h3>
-                        <p>Gentle tap? Quiet. Full palm strike? Maximum volume. The accelerometer knows.</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">🍑</span>
-                    <div class="feature-text">
-                        <h3>Menu Bar App</h3>
-                        <p>Lives as a peach in your menu bar. Pick sounds, adjust sensitivity.</p>
-                    </div>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">⚡</span>
-                    <div class="feature-text">
-                        <h3>Auto-Start</h3>
-                        <p>Launches at login. Your coping mechanism, always ready.</p>
-                    </div>
+                <div class="method-content">
+                    <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
+                    <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
+                    <span class="code-hint">Click to copy · Enter password when prompted</span>
                 </div>
             </div>
-        </section>
 
-        <section>
-            <h2>Get <em>Spank</em></h2>
-            <div class="methods">
-                <!-- Terminal Method -->
-                <div class="method">
-                    <div class="method-header">
-                        <div class="method-icon terminal">&gt;_</div>
-                        <div class="method-info">
-                            <div class="method-title">Terminal</div>
-                            <div class="method-desc">One command. Paste and pray.</div>
-                        </div>
-                        <span class="method-badge">Fastest</span>
+            <div class="or-divider">— or —</div>
+
+            <!-- AI Agent Method -->
+            <div class="method">
+                <div class="method-header">
+                    <div class="method-icon ai">AI</div>
+                    <div class="method-info">
+                        <div class="method-title">AI Agent</div>
+                        <div class="method-desc">Make your robot do it.</div>
                     </div>
-                    <div class="method-content">
-                        <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
-                        <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
-                        <span class="code-hint">Click to copy · Enter password when prompted</span>
-                    </div>
+                    <span class="method-badge">Laziest</span>
                 </div>
-
-                <!-- AI Agent Method -->
-                <div class="method">
-                    <div class="method-header">
-                        <div class="method-icon ai">AI</div>
-                        <div class="method-info">
-                            <div class="method-title">AI Agent</div>
-                            <div class="method-desc">Make your robot do it.</div>
+                <div class="method-content">
+                    <div class="step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div class="step-title">Open your AI overlord</div>
+                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
                         </div>
-                        <span class="method-badge">Laziest</span>
                     </div>
-                    <div class="method-content">
-                        <div class="step">
-                            <span class="step-num">1</span>
-                            <div class="step-content">
-                                <div class="step-title">Open your AI overlord</div>
-                                <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
-                            </div>
+                    <div class="step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div class="step-title">Tell it:</div>
+                            <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
                         </div>
-                        <div class="step">
-                            <span class="step-num">2</span>
-                            <div class="step-content">
-                                <div class="step-title">Tell it:</div>
-                                <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <span class="step-num">3</span>
-                            <div class="step-content">
-                                <div class="step-title">Type password, feel superior</div>
-                                <div class="step-desc">Watch your AI minion do all the work.</div>
-                            </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div class="step-title">Type password, feel superior</div>
+                            <div class="step-desc">Watch your AI minion do all the work.</div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
     <section>
         <h2><em>Questions</em></h2>
