@@ -81,9 +81,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Load sounds
         sounds = SoundOption.loadFromBundle()
         
-        // Set default selection if none
-        if selectedSoundId.isEmpty, let first = sounds.first {
-            selectedSoundId = first.id
+        // Set default selection if none - default to "ma-ka-bhosda-aag" (Gaali Mode!)
+        if selectedSoundId.isEmpty {
+            // Prefer ma-ka-bhosda-aag as the default, fall back to first sound
+            let defaultSoundId = "ma-ka-bhosda-aag"
+            if sounds.contains(where: { $0.id == defaultSoundId }) {
+                selectedSoundId = defaultSoundId
+            } else if let first = sounds.first {
+                selectedSoundId = first.id
+            }
             applySoundSelection()
         }
         
