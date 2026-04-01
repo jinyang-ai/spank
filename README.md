@@ -10,11 +10,24 @@ A macOS menu bar app that plays a surprise sound when you physically slap your M
 
 - macOS 13+ (Ventura or later)
 - Apple Silicon Mac (M1, M2, M3, M4 - any variant)
-- **Intel Macs are NOT supported** (different accelerometer)
+- **Intel Macs are NOT supported** (no accelerometer)
 
-## Quick Install (For Humans)
+## Quick Install (~15MB, No Xcode needed)
 
-Download from **[spank-macos.vercel.app](https://spank-macos.vercel.app)** and follow the instructions.
+### Option 1: Terminal
+
+```bash
+curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip && unzip -o /tmp/Spank.zip -d /tmp && cp -R /tmp/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo /Applications/Spank.app/Contents/Resources/install-simple.sh && open /Applications/Spank.app
+```
+
+### Option 2: AI Agent
+
+Tell your AI assistant (Claude Code, Cursor, Windsurf, etc.):
+> "Install spank from github.com/jinyang-ai/spank using AGENTS.md"
+
+### Option 3: Website
+
+Visit **[spankithard.vercel.app](https://spankithard.vercel.app)** and follow the instructions.
 
 ---
 
@@ -26,47 +39,26 @@ Download from **[spank-macos.vercel.app](https://spank-macos.vercel.app)** and f
 
 ---
 
-## Manual Build from Source
+## Build from Source (For Developers)
 
-### 1. Clone the repo
+Requires Xcode Command Line Tools.
 
 ```bash
+# Clone
 git clone https://github.com/jinyang-ai/spank.git
 cd spank
-```
 
-### 2. Build the app
-
-```bash
+# Build
 ./build.sh
-```
 
-This creates `build/Spank.app`
-
-### 3. Install to Applications
-
-```bash
+# Install
 cp -R build/Spank.app /Applications/
 xattr -cr /Applications/Spank.app
-```
-
-### 4. Install the background service (one-time, requires password)
-
-```bash
 sudo ./install-simple.sh
-```
 
-### 5. Launch the app
-
-```bash
+# Launch
 open /Applications/Spank.app
 ```
-
-Look for 🍑 in your menu bar!
-
-### 6. Slap your MacBook
-
-Give it a **hard slap** on the side or palm rest. Trust us.
 
 ---
 
@@ -95,10 +87,10 @@ Give it a **hard slap** on the side or palm rest. Trust us.
 Drop `.mp3`, `.wav`, or `.m4a` files into:
 
 ```
-SpankApp/sounds/
+/Users/Shared/spank-sounds/
 ```
 
-Then rebuild and reinstall the app.
+They'll appear in the sound picker immediately.
 
 ---
 
@@ -107,6 +99,7 @@ Then rebuild and reinstall the app.
 ```bash
 sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist
 sudo rm /Library/LaunchDaemons/com.aj.spank.plist
+sudo rm /usr/local/bin/spank
 rm -rf /Applications/Spank.app
 rm -rf /Users/Shared/spank-sounds
 ```
@@ -121,12 +114,10 @@ SpankApp/
 │   ├── SpankApp.swift      # Main app code (menu bar UI)
 │   ├── Info.plist          # App metadata
 │   └── sounds/             # Bundled sound files
-├── build.sh                # Build script
+├── build.sh                # Build script (for developers)
 ├── install-simple.sh       # Installer (sets up LaunchDaemon)
-├── spank-daemon.plist      # LaunchDaemon config
 └── website/                # Distribution website
-    ├── index.html
-    └── Spank.dmg
+    └── index.html
 ```
 
 ---
