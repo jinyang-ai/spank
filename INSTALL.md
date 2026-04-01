@@ -4,45 +4,37 @@
 
 ## Requirements
 
-- MacBook with Apple Silicon (M1 Pro, M2, M3, M4, or newer)
+- MacBook with Apple Silicon (M1, M2, M3, M4, or newer)
 - macOS 13 or later
+- **~15MB disk space**
+- **No Xcode required**
 
 ---
 
-## Installation (2 minutes)
+## Quick Install (1 minute)
 
-### Step 1: Download & Open
-
-1. Download `Spank.dmg`
-2. Double-click to open it
-3. Drag `Spank.app` to your **Applications** folder
-
-### Step 2: Run the Installer
-
-Open **Terminal** (search for it in Spotlight with Cmd+Space) and paste:
+Open **Terminal** (press `⌘ Space`, type "Terminal", press Enter) and paste:
 
 ```bash
-sudo /Applications/Spank.app/Contents/Resources/install-simple.sh
+curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip && unzip -o /tmp/Spank.zip -d /tmp && cp -R /tmp/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo /Applications/Spank.app/Contents/Resources/install-simple.sh && open /Applications/Spank.app
 ```
 
-Enter your password when prompted. You'll see:
+Enter your password when prompted. Done!
 
-```
-🍑 Spank Installer
-===================
+---
 
-→ Installing spank binary...
-→ Setting up sounds...
-→ Installing background service...
-→ Starting spank...
+## What Happens
 
-✅ Done!
+1. Downloads Spank.app (~3MB)
+2. Installs to /Applications
+3. Sets up the background service (requires password)
+4. Launches the app
 
-Spank is now running.
-Give your MacBook a HARD slap!
-```
+You'll see a **🍑** in your menu bar when it's running.
 
-### Step 3: Test It!
+---
+
+## Test It!
 
 Give your MacBook a **hard slap** on the palm rest area. You should hear the sound!
 
@@ -50,12 +42,11 @@ Give your MacBook a **hard slap** on the palm rest area. You should hear the sou
 
 ## Using the App
 
-Look for the **🍑** peach emoji in your menu bar (top right of screen).
-
-Click it to:
-- **Start/Stop** the slap detection
+Click the **🍑** peach in your menu bar to:
+- **Start/Stop** slap detection
 - **Adjust threshold** (higher = needs harder slap)
 - **Adjust cooldown** (time between sounds)
+- **Change sounds**
 - **Test the sound**
 
 ---
@@ -64,25 +55,32 @@ Click it to:
 
 ### Nothing happens when I slap?
 
-1. Make sure you're slapping **hard** (the threshold is set high to avoid false triggers)
+1. Make sure you're slapping **hard** (threshold is set high to avoid false triggers)
 2. Check the 🍑 menu - is it showing "Running"?
 3. Try lowering the threshold slider
 
-### How do I uninstall?
+### "Apple cannot verify" error
 
 Run in Terminal:
+```bash
+xattr -cr /Applications/Spank.app
+```
+
+### Uninstall
+
 ```bash
 sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist
 sudo rm /Library/LaunchDaemons/com.aj.spank.plist
 sudo rm /usr/local/bin/spank
 rm -rf /Applications/Spank.app
+rm -rf /Users/Shared/spank-sounds
 ```
 
 ---
 
 ## How It Works
 
-Spank uses your MacBook's built-in accelerometer to detect physical impacts. When you slap it hard enough (above the threshold), it plays the sound.
+Spank uses your MacBook's built-in accelerometer to detect physical impacts. When you slap it hard enough (above the threshold), it plays a sound.
 
 The detection runs as a background service, so it works even when the app isn't open.
 
