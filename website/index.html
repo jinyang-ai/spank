@@ -468,8 +468,8 @@
                 </div>
                 <div class="method-content">
                     <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
-                    <div class="code" onclick="copyCode(this)">cd ~/Desktop && git clone https://github.com/jinyang-ai/spank.git && cd spank && ./build.sh && cp -R build/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo ./install-simple.sh && open /Applications/Spank.app</div>
-                    <span class="code-hint">Click to copy · Enter password when prompted</span>
+                    <div class="code" onclick="copyCode(this)">curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip && unzip -o /tmp/Spank.zip -d /tmp && cp -R /tmp/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo /Applications/Spank.app/Contents/Resources/install-simple.sh && open /Applications/Spank.app</div>
+                    <span class="code-hint">Click to copy · ~15MB download · Enter password when prompted</span>
                 </div>
             </div>
 

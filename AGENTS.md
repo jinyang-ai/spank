@@ -3,6 +3,8 @@
 > **For Claude Code, Cursor, Codex, Aider, Windsurf, or any AI coding assistant**
 >
 > When user says "install spank" - run these commands. User only needs to enter their password once.
+> 
+> **~15MB download. No Xcode required.**
 
 ## Quick Install (Copy-Paste Ready)
 
@@ -12,28 +14,33 @@ Run these commands in sequence. The user will be prompted for their password dur
 # 1. Check Apple Silicon (REQUIRED)
 [[ $(uname -m) == "arm64" ]] || { echo "ERROR: Requires Apple Silicon Mac (M1/M2/M3/M4)"; exit 1; }
 
-# 2. Clone and build
-cd ~/Desktop
-rm -rf spank 2>/dev/null
-git clone https://github.com/jinyang-ai/spank.git
-cd spank
-./build.sh
+# 2. Download pre-built app
+curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip
 
-# 3. Install app
+# 3. Unzip and install
+unzip -o /tmp/Spank.zip -d /tmp
 rm -rf /Applications/Spank.app
-cp -R build/Spank.app /Applications/
+cp -R /tmp/Spank.app /Applications/
 xattr -cr /Applications/Spank.app
 
 # 4. Install daemon (requires password)
-sudo ./install-simple.sh
+sudo /Applications/Spank.app/Contents/Resources/install-simple.sh
 
 # 5. Launch
 open /Applications/Spank.app
 
-# 6. Verify
+# 6. Cleanup & verify
+rm -f /tmp/Spank.zip
+rm -rf /tmp/Spank.app
 sleep 2
 pgrep -fl "spank --custom" && echo "✅ Daemon running" || echo "❌ Daemon not running"
 pgrep -fl SpankApp && echo "✅ App running" || echo "❌ App not running"
+```
+
+## One-liner version
+
+```bash
+curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip && unzip -o /tmp/Spank.zip -d /tmp && cp -R /tmp/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo /Applications/Spank.app/Contents/Resources/install-simple.sh && open /Applications/Spank.app
 ```
 
 ## What to Tell User After Install
@@ -45,12 +52,6 @@ pgrep -fl SpankApp && echo "✅ App running" || echo "❌ App not running"
 ---
 
 ## Troubleshooting
-
-### "swiftc: command not found"
-```bash
-xcode-select --install
-# Wait for install, then re-run ./build.sh
-```
 
 ### App won't open / "damaged" error
 ```bash
@@ -83,7 +84,6 @@ sudo rm /Library/LaunchDaemons/com.aj.spank.plist
 sudo rm /usr/local/bin/spank
 rm -rf /Applications/Spank.app
 rm -rf /Users/Shared/spank-sounds
-rm -rf ~/Desktop/spank
 ```
 
 ---
@@ -99,4 +99,4 @@ rm -rf ~/Desktop/spank
 
 - macOS 13+ (Ventura or later)
 - Apple Silicon (M1/M2/M3/M4) - Intel Macs don't have accelerometer
-- Xcode Command Line Tools (for building)
+- **No Xcode needed** - uses pre-built binary
