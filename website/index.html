@@ -3,39 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#FFFAF5">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Spank — Your MacBook Likes It Rough</title>
     <meta name="description" content="An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.">
-
-    <!-- Open Graph / Social -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spankithard.vercel.app">
-    <meta property="og:title" content="Spank — Your MacBook Likes It Rough">
-    <meta property="og:description" content="An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.">
-    <meta property="og:image" content="https://spankithard.vercel.app/og-image.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Spank — Your MacBook Likes It Rough">
-    <meta name="twitter:description" content="An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.">
-
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍑</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #0a0a0a;
-            --bg-elevated: #111111;
-            --bg-glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.5);
-            --text-muted: rgba(255, 255, 255, 0.3);
-            --accent: #ff6b4a;
-            --accent-glow: rgba(255, 107, 74, 0.4);
-            --peach: #ffaa85;
-            --peach-glow: rgba(255, 170, 133, 0.3);
-            --ease: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --peach: #FFAA85;
+            --peach-light: #FFD4BC;
+            --cream: #FFFAF5;
+            --text: #2D2A26;
+            --text-light: #6B6560;
+            --accent: #FF6B4A;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         html {
@@ -44,108 +29,131 @@
         }
 
         body {
-            font-family: 'Space Grotesk', -apple-system, sans-serif;
-            background: var(--bg);
+            font-family: 'DM Sans', sans-serif;
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
+            overscroll-behavior: none;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Custom cursor - desktop only */
-        @media (hover: hover) and (pointer: fine) {
-            body { cursor: none; }
-            
-            .cursor {
-                position: fixed;
-                width: 20px;
-                height: 20px;
-                border: 1px solid var(--accent);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 10000;
-                transition: transform 0.15s var(--ease), width 0.3s var(--ease), height 0.3s var(--ease), border-color 0.3s ease, opacity 0.3s ease;
-                transform: translate(-50%, -50%);
-                mix-blend-mode: difference;
-                opacity: 0;
-            }
-
-            .cursor.active { opacity: 1; }
-
-            .cursor-dot {
-                position: fixed;
-                width: 6px;
-                height: 6px;
-                background: var(--accent);
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 10001;
-                transform: translate(-50%, -50%);
-                opacity: 0;
-            }
-
-            .cursor-dot.active { opacity: 1; }
-
-            .cursor.hovering {
-                width: 50px;
-                height: 50px;
-                border-color: var(--peach);
-            }
-        }
-
-        /* Hide cursor elements on touch devices */
-        @media (hover: none) {
-            .cursor, .cursor-dot { display: none !important; }
-        }
-
-        /* Noise overlay */
+        /* Bulletproof background */
         body::before {
             content: '';
             position: fixed;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
+            top: -50vh;
+            left: -50vw;
+            right: -50vw;
+            bottom: -50vh;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--cream) 20%, #FFF5EE 50%, var(--peach-light) 80%, var(--peach-light) 100%);
+            z-index: -1;
             pointer-events: none;
+        }
+
+        a, button, .clickable { cursor: pointer !important; }
+
+        /* ============================================
+           ANIMATIONS - CSS First, StringTune Style
+           ============================================ */
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            20% { transform: translate3d(-5px, -3px, 0); }
+            40% { transform: translate3d(5px, 2px, 0); }
+            60% { transform: translate3d(-3px, 2px, 0); }
+            80% { transform: translate3d(3px, -2px, 0); }
+        }
+        
+        @keyframes jiggle {
+            0%, 100% { transform: scale(1) rotate(0); }
+            25% { transform: scale(1.15) rotate(-8deg); }
+            50% { transform: scale(0.9) rotate(5deg); }
+            75% { transform: scale(1.05) rotate(-3deg); }
+        }
+        
+        @keyframes pulse { 
+            0%, 100% { opacity: 0.4; transform: translateY(0); } 
+            50% { opacity: 0.8; transform: translateY(5px); } 
+        }
+        
+        @keyframes ripple { 
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(4); opacity: 0; } 
+        }
+
+        /* Text reveal animation */
+        @keyframes revealChar {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px) rotateX(-90deg);
+                filter: blur(10px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) rotateX(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Scroll reveal animations */
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(60px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9);
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        body.shaking { animation: shake 0.4s ease-out; }
+
+        #particle-canvas { 
+            position: fixed; 
+            inset: 0; 
+            pointer-events: none; 
             z-index: 9999;
         }
 
-        /* Gradient orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .orb-1 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            top: -200px;
-            right: -200px;
-            animation: float-orb 20s ease-in-out infinite;
-        }
-
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--peach-glow) 0%, transparent 70%);
-            bottom: 20%;
-            left: -100px;
-            animation: float-orb 25s ease-in-out infinite reverse;
-        }
-
-        @keyframes float-orb {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
         /* ============================================
-           HERO
+           HERO SECTION
            ============================================ */
+        
         .hero {
             min-height: 100vh;
             display: flex;
@@ -158,680 +166,612 @@
         }
 
         .peach {
-            font-size: clamp(120px, 30vw, 220px);
+            font-size: clamp(100px, 25vw, 180px);
             line-height: 1;
-            margin-bottom: 32px;
-            filter: drop-shadow(0 0 60px var(--peach-glow)) drop-shadow(0 0 120px var(--accent-glow));
-            animation: peach-float 6s ease-in-out infinite;
+            animation: float 4s ease-in-out infinite;
+            text-shadow: 0 20px 40px rgba(255, 107, 74, 0.25);
+            margin-bottom: 24px;
             user-select: none;
-            transition: filter 0.3s ease;
+            will-change: transform;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .peach:hover, .peach.slapped { 
+            animation: jiggle 0.5s ease-out; 
         }
 
-        @media (hover: hover) {
-            .peach:hover {
-                filter: drop-shadow(0 0 80px var(--peach-glow)) drop-shadow(0 0 160px var(--accent-glow));
-            }
-        }
-
-        @keyframes peach-float {
-            0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-30px) rotate(3deg); }
-        }
-
-        .peach.slapped {
-            animation: peach-slap 0.5s var(--ease) forwards;
-        }
-
-        @keyframes peach-slap {
-            0% { transform: scale(1) rotate(0); }
-            20% { transform: scale(1.3) rotate(15deg); }
-            40% { transform: scale(0.9) rotate(-10deg); }
-            60% { transform: scale(1.1) rotate(5deg); }
-            100% { transform: scale(1) rotate(0); }
-        }
-
+        /* Split text for character animation */
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 12vw, 7rem);
+            font-size: clamp(2.5rem, 9vw, 5rem);
             font-weight: 400;
-            letter-spacing: -0.03em;
-            line-height: 0.95;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            perspective: 1000px;
+        }
+        
+        h1 em { 
+            font-style: italic; 
+            color: var(--accent);
+            display: inline-block;
         }
 
-        h1 em {
-            font-style: italic;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--peach) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        h1 .line {
-            display: block;
-            overflow: hidden;
-        }
-
-        h1 .line span {
-            display: block;
-            animation: reveal-text 1.2s var(--ease) backwards;
-        }
-
-        h1 .line:nth-child(2) span { animation-delay: 0.1s; }
-        h1 .line:nth-child(3) span { animation-delay: 0.2s; }
-
-        @keyframes reveal-text {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
+        h1 .char {
+            display: inline-block;
+            animation: revealChar 0.8s var(--ease-out-expo) backwards;
         }
 
         .tagline {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: var(--text-dim);
-            max-width: 500px;
-            margin-bottom: 48px;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--text-light);
+            max-width: 400px;
+            margin-bottom: 32px;
             opacity: 0;
-            animation: fade-up 1s var(--ease) 0.4s forwards;
-        }
-
-        @keyframes fade-up {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            animation: slideUp 1s var(--ease-out-expo) 0.6s forwards;
         }
 
         .cta {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            background: transparent;
-            color: var(--text);
-            padding: 18px 36px;
+            gap: 10px;
+            background: var(--text);
+            color: var(--cream);
+            padding: 16px 32px;
             border-radius: 100px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            border: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
             opacity: 0;
-            animation: fade-up 1s var(--ease) 0.6s forwards;
-            transition: border-color 0.4s ease, transform 0.4s var(--ease);
+            animation: slideUp 1s var(--ease-out-expo) 0.8s forwards;
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+            overflow: hidden;
         }
-
+        
         .cta::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--peach) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, #FF8F6B 100%);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-
-        .cta span, .cta svg {
-            position: relative;
-            z-index: 1;
-            transition: transform 0.4s var(--ease);
+        
+        .cta:hover { 
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
-
-        .cta:hover {
-            border-color: transparent;
-            transform: scale(1.05);
-        }
-
+        
         .cta:hover::before { opacity: 1; }
-        .cta:hover span { transform: translateX(4px); }
-        .cta:hover svg { transform: translateY(3px); }
-
-        .cta svg {
-            width: 20px;
-            height: 20px;
+        
+        .cta svg, .cta span { position: relative; z-index: 1; }
+        .cta svg { 
+            width: 18px; 
+            height: 18px;
+            transition: transform 0.3s var(--ease-out-expo);
         }
+        .cta:hover svg { transform: translateY(2px); }
 
         .note {
-            margin-top: 20px;
+            margin-top: 16px;
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: var(--text-light);
             opacity: 0;
-            animation: fade-up 1s var(--ease) 0.8s forwards;
+            animation: fadeIn 1s var(--ease-out-expo) 1s forwards;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 32px;
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+            will-change: opacity, transform;
+        }
+
+        /* ============================================
+           SCROLL REVEAL SYSTEM
+           ============================================ */
+        
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+        }
+        
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        [data-reveal="slide-left"] {
+            transform: translateX(-40px);
+        }
+        
+        [data-reveal="slide-left"].revealed {
+            transform: translateX(0);
+        }
+        
+        [data-reveal="slide-right"] {
+            transform: translateX(40px);
+        }
+        
+        [data-reveal="slide-right"].revealed {
+            transform: translateX(0);
+        }
+        
+        [data-reveal="scale"] {
+            transform: scale(0.95);
+        }
+        
+        [data-reveal="scale"].revealed {
+            transform: scale(1);
+        }
+
+        /* Staggered children */
+        [data-stagger] > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+        }
+        
+        [data-stagger].revealed > *:nth-child(1) { transition-delay: 0.05s; }
+        [data-stagger].revealed > *:nth-child(2) { transition-delay: 0.1s; }
+        [data-stagger].revealed > *:nth-child(3) { transition-delay: 0.15s; }
+        [data-stagger].revealed > *:nth-child(4) { transition-delay: 0.2s; }
+        [data-stagger].revealed > *:nth-child(5) { transition-delay: 0.25s; }
+        [data-stagger].revealed > *:nth-child(6) { transition-delay: 0.3s; }
+        [data-stagger].revealed > *:nth-child(7) { transition-delay: 0.35s; }
+        [data-stagger].revealed > *:nth-child(8) { transition-delay: 0.4s; }
+        
+        [data-stagger].revealed > * {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ============================================
            SECTIONS
            ============================================ */
+        
         section {
-            padding: 120px 32px;
-            max-width: 600px;
+            padding: 100px 32px;
+            max-width: 560px;
             margin: 0 auto;
-            position: relative;
         }
-
+        
         #install {
-            max-width: 1100px;
+            max-width: 95%;
+            padding: 100px 32px;
+        }
+        
+        @media (min-width: 1400px) {
+            #install { max-width: 1200px; }
         }
 
         h2 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 6vw, 3rem);
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 400;
-            margin-bottom: 60px;
+            margin-bottom: 48px;
             text-align: center;
         }
-
-        /* JS-enhanced scroll reveal */
-        .js h2,
-        .js .method,
-        .js .faq-item {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
-        }
-
-        .js h2.visible,
-        .js .method.visible,
-        .js .faq-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        h2 em { font-style: italic; color: var(--accent); }
+        
+        h2 em { font-style: italic; }
 
         /* ============================================
-           INSTALL METHODS
+           INSTALL METHODS - With micro-interactions
            ============================================ */
-        .methods {
-            display: grid;
-            gap: 24px;
+        
+        .methods { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
         }
-
+        
         @media (min-width: 768px) {
             .methods {
+                display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 32px;
+                align-items: start;
             }
         }
-
+        
         .method {
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            background: rgba(255,255,255,0.85);
+            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 16px;
+            transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+            will-change: transform;
         }
-
-        .method::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--accent-glow) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
+        
         .method:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 60px var(--accent-glow), inset 0 0 60px rgba(255, 107, 74, 0.05);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
         }
-
-        .method:hover::before { opacity: 1; }
-
-        .method-label {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 600;
+        
+        .option-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--accent);
-            margin-bottom: 20px;
-            position: relative;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            padding: 14px 0 10px;
+            transition: color 0.3s ease;
         }
-
+        
+        .method:hover .option-label { color: var(--accent); }
+        
         .method-header {
+            padding: 0 20px 20px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 14px;
         }
-
+        
         .method-icon {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             flex-shrink: 0;
-            position: relative;
-            transition: transform 0.4s var(--ease-back);
+            transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
         }
-
+        
         .method:hover .method-icon {
             transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
-
-        .method-icon.terminal {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            border: 1px solid var(--border);
-            color: #4ade80;
+        
+        .method-icon.terminal { background: var(--text); color: #4ade80; }
+        .method-icon.ai { background: linear-gradient(135deg, var(--accent) 0%, #FF8F6B 100%); color: white; }
+        
+        .method-info { flex: 1; }
+        .method-title { 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
-
-        .method-icon.ai {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--peach) 100%);
-            color: #000;
-        }
-
-        .method-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .method-desc {
-            font-size: 0.9rem;
-            color: var(--text-dim);
-        }
-
+        .method:hover .method-title { color: var(--accent); }
+        .method-desc { font-size: 0.8rem; color: var(--text-light); }
+        
+        .method-content { padding: 0 20px 20px; }
+        
         .install-hint {
             font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-bottom: 16px;
+            color: var(--text-light);
+            margin-bottom: 12px;
         }
-
+        
         .install-hint kbd {
             display: inline-block;
-            padding: 3px 8px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            padding: 2px 6px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 4px;
             font-family: 'SF Mono', monospace;
             font-size: 0.8em;
+            transition: background 0.2s ease, transform 0.2s ease;
         }
-
-        /* Code blocks */
-        .code-wrapper {
-            position: relative;
+        
+        .install-hint kbd:hover {
+            background: rgba(0,0,0,0.12);
+            transform: translateY(-1px);
         }
 
         .code {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            padding-right: 80px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.75rem;
-            color: var(--peach);
+            background: var(--text);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--peach-light);
+            text-align: left;
             overflow-x: auto;
             cursor: pointer;
+            margin: 0 0 8px;
             position: relative;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            white-space: pre-wrap;
-            word-break: break-all;
+            transition: background 0.3s ease, transform 0.3s var(--ease-out-expo);
         }
-
-        .code:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+        
+        .code:hover { 
+            background: #1a1a1a;
+            transform: scale(1.01);
         }
-
-        /* Copy button always visible */
-        .copy-btn {
+        
+        .code.copied::after {
+            content: 'Copied!';
             position: absolute;
-            right: 12px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--bg-glass);
-            border: 1px solid var(--border);
-            color: var(--text-dim);
-            padding: 6px 12px;
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
             border-radius: 6px;
             font-size: 0.7rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 2;
+            font-family: 'DM Sans', sans-serif;
+            animation: scaleIn 0.3s var(--ease-out-expo);
         }
-
-        .copy-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
+        
+        .code-hint { font-size: 0.75rem; color: var(--text-light); }
+        
+        .step { 
+            display: flex; 
+            gap: 12px; 
+            margin-top: 16px;
+            transition: transform 0.3s var(--ease-out-expo);
         }
-
-        .copy-btn.copied {
-            background: #4ade80;
-            border-color: #4ade80;
-            color: #000;
-        }
-
-        .code-hint {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 10px;
-        }
-
-        /* Multi-line code for terminal */
-        .code-multiline {
-            white-space: pre;
-            line-height: 1.8;
-        }
-
-        .code-multiline .comment {
-            color: var(--text-muted);
-        }
-
-        .step {
-            display: flex;
-            gap: 14px;
-            margin-top: 20px;
-            padding: 12px 0;
-            transition: transform 0.3s var(--ease);
-        }
-
-        .step:hover {
-            transform: translateX(8px);
-        }
-
+        
+        .step:hover { transform: translateX(4px); }
+        
         .step-num {
-            width: 28px;
-            height: 28px;
+            width: 26px; 
+            height: 26px;
             border-radius: 50%;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
+            background: var(--peach-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.8rem;
             font-weight: 600;
+            color: var(--text);
             flex-shrink: 0;
-            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            transition: transform 0.3s var(--ease-out-expo), background 0.3s ease;
         }
-
-        .step:hover .step-num {
+        
+        .step:hover .step-num { 
+            transform: scale(1.15);
             background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
+            color: white;
         }
-
-        .step-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 4px;
-        }
-
-        .step-desc {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-        }
+        
+        .step-content { flex: 1; }
+        .step-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; }
+        .step-desc { font-size: 0.85rem; color: var(--text-light); }
 
         /* ============================================
-           FAQ
+           FAQ SECTION
            ============================================ */
-        .faq-item {
-            border-bottom: 1px solid var(--border);
-            padding: 24px 0;
+        
+        .faq-item { 
+            border-bottom: 1px solid rgba(0,0,0,0.08); 
+            padding: 20px 0;
+            contain: layout style;
         }
-
+        
         .faq-item:last-child { border: none; }
-
+        
         .faq-q {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
             transition: color 0.3s ease;
         }
-
+        
         .faq-q:hover { color: var(--accent); }
-
-        .faq-q::after {
-            content: '+';
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: var(--text-muted);
-            transition: transform 0.4s var(--ease), color 0.3s ease;
-            flex-shrink: 0;
+        
+        .faq-q::after { 
+            content: '+'; 
+            font-size: 1.3rem; 
+            font-weight: 300; 
+            transition: transform 0.4s var(--ease-out-expo), color 0.3s ease;
+            will-change: transform;
         }
-
+        
         .faq-q:hover::after { color: var(--accent); }
-
-        .faq-item.open .faq-q::after {
-            transform: rotate(45deg);
-        }
-
-        .faq-a {
+        
+        .faq-item.open .faq-q::after { transform: rotate(45deg); }
+        
+        .faq-a { 
             display: grid;
             grid-template-rows: 0fr;
-            transition: grid-template-rows 0.5s var(--ease);
-            font-size: 0.9rem;
-            color: var(--text-dim);
+            transition: grid-template-rows 0.4s var(--ease-out-expo), padding 0.4s var(--ease-out-expo);
+            font-size: 0.9rem; 
+            color: var(--text-light);
         }
-
-        .faq-a-inner {
+        
+        .faq-a > div {
             overflow: hidden;
         }
-
-        .faq-a-content {
-            padding-top: 0;
-            transition: padding-top 0.5s var(--ease);
-        }
-
-        .faq-item.open .faq-a {
+        
+        .faq-item.open .faq-a { 
             grid-template-rows: 1fr;
+            padding-top: 12px;
         }
-
-        .faq-item.open .faq-a-content {
-            padding-top: 16px;
-        }
-
+        
         .faq-a code {
             display: block;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            color: var(--peach);
-            padding: 14px;
-            padding-right: 80px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            margin-top: 14px;
+            background: var(--text);
+            color: var(--peach-light);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-top: 12px;
             font-family: 'SF Mono', monospace;
             cursor: pointer;
-            transition: border-color 0.3s ease;
             position: relative;
-            word-break: break-all;
+            transition: background 0.3s ease, transform 0.3s var(--ease-out-expo);
         }
-
-        .faq-a code:hover {
-            border-color: var(--accent);
+        
+        .faq-a code:hover { 
+            background: #1a1a1a;
+            transform: scale(1.01);
+        }
+        
+        .faq-a code.copied::after {
+            content: 'Copied!';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-family: 'DM Sans', sans-serif;
         }
 
         /* ============================================
            FOOTER
            ============================================ */
+        
         footer {
             text-align: center;
-            padding: 60px 24px 80px;
+            padding: 48px 24px 64px;
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: var(--text-light);
         }
-
-        footer a {
-            color: var(--text-dim);
+        
+        footer a { 
+            color: var(--accent); 
             text-decoration: none;
+            position: relative;
             transition: color 0.3s ease;
         }
-
-        footer a:hover { color: var(--accent); }
-
+        
+        footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+        
+        footer a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
         footer .sig {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            margin-top: 16px;
-            font-size: 1.1rem;
-            color: var(--text-dim);
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--text);
         }
 
         /* ============================================
-           EFFECTS
+           CLICK EFFECTS
            ============================================ */
+        
         .click-ripple {
             position: fixed;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 107, 74, 0.3) 0%, transparent 70%);
             pointer-events: none;
             z-index: 9998;
-        }
-
-        @keyframes ripple {
-            from { transform: scale(0); opacity: 1; }
-            to { transform: scale(6); opacity: 0; }
-        }
-
-        #particle-canvas {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9997;
-        }
-
-        body.shaking { animation: shake 0.4s var(--ease); }
-
-        @keyframes shake {
-            0%, 100% { transform: translate3d(0, 0, 0); }
-            20% { transform: translate3d(-8px, -5px, 0); }
-            40% { transform: translate3d(8px, 4px, 0); }
-            60% { transform: translate3d(-5px, 4px, 0); }
-            80% { transform: translate3d(5px, -4px, 0); }
+            will-change: transform, opacity;
         }
 
         /* ============================================
-        /* Utilities */
-        .mt-sm { margin-top: 8px; }
-
-
-           RESPONSIVE & REDUCED MOTION
+           RESPONSIVE
            ============================================ */
-        @media (max-width: 768px) {
+        
+        @media (max-width: 600px) {
+            .hero { padding: 48px 24px; }
             section { padding: 80px 24px; }
-            h2 { margin-bottom: 40px; }
-            .method { padding: 24px; }
-            .code { 
-                font-size: 0.65rem;
-                padding-right: 70px;
-            }
-            .copy-btn {
-                padding: 4px 8px;
-                font-size: 0.65rem;
-            }
+            #install { padding: 80px 24px; }
+            h2 { margin-bottom: 32px; }
+            .code { font-size: 0.6rem; padding: 12px; }
+            .scroll-hint { display: none; }
+            
+            .method:hover { transform: none; }
+            .step:hover { transform: none; }
         }
-
+        
+        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
-    <div class="cursor"></div>
-    <div class="cursor-dot"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
     <canvas id="particle-canvas"></canvas>
     <audio id="slap-sound" preload="auto">
         <source src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//uQwAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAA3AABbbAAJDQ0SEhYWGxsfJCQpKS0tMjI2Ozs/P0RESUlNTVJWVltbX19kZGltbXJydnZ7e39/hImJjY2SkpaWm5+fpKSpqa2tsrK2u7vAwMTEycnN0tLW1tvb4ODk5Ont7fLy9vb7+/8AAAAATGF2ZgAAAAAAAAAAAAAAAAAAAAAAJAVAAAAAAAAAW2wAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/mp3">
     </audio>
 
     <div class="hero">
-        <div class="peach">🍑</div>
-        <h1>
-            <span class="line"><span>Your Mac</span></span>
-            <span class="line"><span>Likes It <em>Rough</em></span></span>
-        </h1>
+        <div class="peach" data-parallax="0.3">🍑</div>
+        <h1><span class="char-wrap">Your Mac<br>Likes It <em>Rough</em></span></h1>
         <p class="tagline">An app that plays sounds when you smack your laptop. Apple Silicon required. Sanity optional.</p>
-        <a href="#install" class="cta magnetic">
+        <a href="#install" class="cta">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
             <span>Download Spank</span>
         </a>
         <p class="note">Free forever · Open source · No regrets</p>
+        <div class="scroll-hint">↓</div>
     </div>
 
     <section id="install">
-        <h2>Get <em>Spank</em></h2>
-        <div class="methods">
+        <h2 data-reveal>Get <em>Spank</em></h2>
+        <div class="methods" data-reveal data-stagger>
+            <!-- Terminal Method -->
             <div class="method">
-                <div class="method-label">Fast Option</div>
+                <div class="option-label">Fast Option</div>
                 <div class="method-header">
                     <div class="method-icon terminal">&gt;_</div>
-                    <div>
+                    <div class="method-info">
                         <div class="method-title">Terminal</div>
                         <div class="method-desc">One command. Paste and pray.</div>
                     </div>
                 </div>
-                <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
-                <div class="code-wrapper">
-                    <div class="code" id="terminal-cmd"><span class="comment"># Download, install, and launch Spank</span>
-curl -sL https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip &amp;&amp; \
-unzip -oq /tmp/Spank.zip -d /tmp &amp;&amp; \
-cp -R /tmp/Spank.app /Applications/ &amp;&amp; \
-xattr -cr /Applications/Spank.app &amp;&amp; \
-sudo /Applications/Spank.app/Contents/Resources/install-simple.sh &amp;&amp; \
-open /Applications/Spank.app</div>
-                    <button type="button" class="copy-btn" onclick="copyCode('terminal-cmd', this)">Copy</button>
+                <div class="method-content">
+                    <p class="install-hint">Press <kbd>⌘ Space</kbd>, type <strong>Terminal</strong>, press <strong>Enter</strong></p>
+                    <div class="code" onclick="copyCode(this)">curl -L https://github.com/jinyang-ai/spank/releases/download/v1.0.0/Spank.zip -o /tmp/Spank.zip && unzip -o /tmp/Spank.zip -d /tmp && cp -R /tmp/Spank.app /Applications/ && xattr -cr /Applications/Spank.app && sudo /Applications/Spank.app/Contents/Resources/install-simple.sh && open /Applications/Spank.app</div>
+                    <span class="code-hint">Click to copy · ~15MB download · Enter password when prompted</span>
                 </div>
-                <p class="code-hint">~15MB download · Enter password when prompted</p>
             </div>
 
+            <!-- AI Agent Method -->
             <div class="method">
-                <div class="method-label">Lazy Option</div>
+                <div class="option-label">Lazy Option</div>
                 <div class="method-header">
                     <div class="method-icon ai">AI</div>
-                    <div>
+                    <div class="method-info">
                         <div class="method-title">AI Agent</div>
                         <div class="method-desc">Make your robot do it.</div>
                     </div>
                 </div>
-                <div class="step">
-                    <span class="step-num">1</span>
-                    <div>
-                        <div class="step-title">Open your AI overlord</div>
-                        <div class="step-desc">Claude Code, Cursor, Windsurf, Aider...</div>
-                    </div>
-                </div>
-                <div class="step">
-                    <span class="step-num">2</span>
-                    <div>
-                        <div class="step-title">Tell it:</div>
-                        <div class="code-wrapper mt-sm">
-                            <div class="code" id="ai-cmd">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
-                            <button type="button" class="copy-btn" onclick="copyCode('ai-cmd', this)">Copy</button>
+                <div class="method-content">
+                    <div class="step">
+                        <span class="step-num">1</span>
+                        <div class="step-content">
+                            <div class="step-title">Open your AI overlord</div>
+                            <div class="step-desc">Claude Code, Cursor, Windsurf, Aider... whatever you vibe with</div>
                         </div>
                     </div>
-                </div>
-                <div class="step">
-                    <span class="step-num">3</span>
-                    <div>
-                        <div class="step-title">Type password, feel superior</div>
-                        <div class="step-desc">Watch your AI minion do all the work.</div>
+                    <div class="step">
+                        <span class="step-num">2</span>
+                        <div class="step-content">
+                            <div class="step-title">Tell it:</div>
+                            <div class="code" onclick="copyCode(this)">Install spank from github.com/jinyang-ai/spank using AGENTS.md</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span class="step-num">3</span>
+                        <div class="step-content">
+                            <div class="step-title">Type password, feel superior</div>
+                            <div class="step-desc">Watch your AI minion do all the work.</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -839,138 +779,118 @@ open /Applications/Spank.app</div>
     </section>
 
     <section>
-        <h2><em>Questions</em></h2>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">Why does it need my password?</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">The accelerometer requires root access because Apple doesn't want you slapping your $3000 laptop. We're not mining crypto or stealing your nudes—just detecting violence. It's open source. Trust issues? Read the code.</div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">Apple says "unidentified developer"</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal:
-                <div class="code-wrapper">
-                    <code id="faq-xattr">xattr -cr /Applications/Spank.app</code>
-                    <button type="button" class="copy-btn" onclick="copyCode('faq-xattr', this); event.stopPropagation();">Copy</button>
-                </div>
-            </div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">I slapped it and nothing happened</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">First, look for the 🍑 in your menu bar. If it's there, you're not slapping hard enough. This isn't a gentle caress—commit to the violence. Really smack it. Your laptop can take it. Probably.</div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">Will this break my MacBook?</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">Look, the accelerometer exists to detect drops. We're just... finding alternative uses. Apple engineers did not anticipate this. That said, we are absolutely not liable for cracked screens, dented chassis, or HR complaints. Spank responsibly.</div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">My coworkers are staring at me</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">Good. Assert dominance. Maintain eye contact while slapping your laptop. If they ask questions, just say "stress relief" and slap harder. This is a conversation ender, not a conversation starter.</div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">Intel Mac?</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">No accelerometer on Intel. Apple said "you don't need to know when your laptop is being abused" and honestly they were wrong. M1/M2/M3/M4 only. Consider this your sign to upgrade.</div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">How do I uninstall this chaos?</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option:
-                <div class="code-wrapper">
-                    <code id="faq-uninstall">sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist &amp;&amp; rm -rf /Applications/Spank.app</code>
-                    <button type="button" class="copy-btn" onclick="copyCode('faq-uninstall', this); event.stopPropagation();">Copy</button>
-                </div>
-            </div></div></div>
-        </div>
-        <div class="faq-item">
-            <div class="faq-q" onclick="toggleFaq(this)">Can I add my ex's voicemail as a sound?</div>
-            <div class="faq-a"><div class="faq-a-inner"><div class="faq-a-content">Absolutely. Drop any .mp3 into the sounds folder and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.
-                <div class="code-wrapper">
-                    <code id="faq-sounds">/Users/Shared/spank-sounds/</code>
-                    <button type="button" class="copy-btn" onclick="copyCode('faq-sounds', this); event.stopPropagation();">Copy</button>
-                </div>
-            </div></div></div>
+        <h2 data-reveal><em>Questions</em></h2>
+        <div data-reveal data-stagger>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Why does it need my password?</div>
+                <div class="faq-a"><div>The accelerometer requires root access because Apple doesn't want you slapping your $3000 laptop. We're not mining crypto or stealing your nudes—just detecting violence. It's open source. Trust issues? Read the code.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Apple says "unidentified developer"</div>
+                <div class="faq-a"><div>Yeah, Apple doesn't trust software that makes your laptop moan when you hit it. Can't imagine why. Right-click → Open → Open again. Or if you're feeling terminal: <code onclick="copyCode(this)">xattr -cr /Applications/Spank.app</code></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">I slapped it and nothing happened</div>
+                <div class="faq-a"><div>First, look for the 🍑 in your menu bar. If it's there, you're not slapping hard enough. This isn't a gentle caress—commit to the violence. Really smack it. Your laptop can take it. Probably.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Will this break my MacBook?</div>
+                <div class="faq-a"><div>Look, the accelerometer exists to detect drops. We're just... finding alternative uses. Apple engineers did not anticipate this. That said, we are absolutely not liable for cracked screens, dented chassis, or HR complaints. Spank responsibly.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">My coworkers are staring at me</div>
+                <div class="faq-a"><div>Good. Assert dominance. Maintain eye contact while slapping your laptop. If they ask questions, just say "stress relief" and slap harder. This is a conversation ender, not a conversation starter.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Intel Mac?</div>
+                <div class="faq-a"><div>No accelerometer on Intel. Apple said "you don't need to know when your laptop is being abused" and honestly they were wrong. M1/M2/M3/M4 only. Consider this your sign to upgrade.</div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">How do I uninstall this chaos?</div>
+                <div class="faq-a"><div>Regretting your life choices? Click the 🍑 → Stop Daemon, then drag to trash. For the nuclear option: <code onclick="copyCode(this)">sudo launchctl unload /Library/LaunchDaemons/com.aj.spank.plist && rm -rf /Applications/Spank.app</code></div></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Can I add my ex's voicemail as a sound?</div>
+                <div class="faq-a"><div>Absolutely. Drop any .mp3 into <code onclick="copyCode(this)">/Users/Shared/spank-sounds/</code> and it shows up in the picker. We won't judge. Actually, we might judge a little. But the app won't.</div></div>
+            </div>
         </div>
     </section>
 
-    <footer>
-        Built by <a href="https://www.linkedin.com/in/abhishek-jayaram/" target="_blank">AJ</a> ·
-        Powered by <a href="https://github.com/taigrr/spank" target="_blank">taigrr/spank</a> ·
+    <footer data-reveal>
+        Built by <a href="https://www.linkedin.com/in/abhishek-jayaram/" target="_blank">AJ</a> · 
+        Powered by <a href="https://github.com/taigrr/spank" target="_blank">taigrr/spank</a> · 
         <a href="https://github.com/jinyang-ai/spank" target="_blank">View Source</a>
         <p class="sig">Spank responsibly.</p>
     </footer>
 
     <script>
-        // Enable JS-enhanced styles
-        document.documentElement.classList.add('js');
-
         // ============================================
-        // CUSTOM CURSOR (desktop only)
+        // TEXT REVEAL - Split characters
         // ============================================
-        const cursor = document.querySelector('.cursor');
-        const cursorDot = document.querySelector('.cursor-dot');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
-        let cursorVisible = false;
-
-        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-            document.addEventListener('mousemove', e => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                cursorDot.style.left = mouseX + 'px';
-                cursorDot.style.top = mouseY + 'px';
-
-                if (!cursorVisible) {
-                    cursorVisible = true;
-                    cursorX = mouseX;
-                    cursorY = mouseY;
-                    cursor.classList.add('active');
-                    cursorDot.classList.add('active');
+        function splitText() {
+            const h1 = document.querySelector('h1');
+            const wrapper = h1.querySelector('.char-wrap');
+            if (!wrapper) return;
+            
+            const html = wrapper.innerHTML;
+            let charIndex = 0;
+            let newHtml = '';
+            let inTag = false;
+            
+            for (let i = 0; i < html.length; i++) {
+                const char = html[i];
+                if (char === '<') inTag = true;
+                if (!inTag && char !== ' ' && char !== '\n') {
+                    newHtml += `<span class="char" style="animation-delay: ${charIndex * 0.03}s">${char}</span>`;
+                    charIndex++;
+                } else {
+                    newHtml += char;
                 }
-            });
-
-            function animateCursor() {
-                if (cursorVisible) {
-                    cursorX += (mouseX - cursorX) * 0.15;
-                    cursorY += (mouseY - cursorY) * 0.15;
-                    cursor.style.left = cursorX + 'px';
-                    cursor.style.top = cursorY + 'px';
-                }
-                requestAnimationFrame(animateCursor);
+                if (char === '>') inTag = false;
             }
-            animateCursor();
-
-            // Hover states
-            document.querySelectorAll('a, button, .cta, .code, .faq-q, .method, .copy-btn').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-            });
+            
+            wrapper.innerHTML = newHtml;
         }
+        splitText();
 
         // ============================================
-        // CARD GLOW EFFECT
+        // SCROLL REVEAL - Intersection Observer
         // ============================================
-        document.querySelectorAll('.method').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                card.style.setProperty('--mouse-x', x + '%');
-                card.style.setProperty('--mouse-y', y + '%');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
             });
+        }, { 
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('[data-reveal], [data-stagger]').forEach(el => {
+            revealObserver.observe(el);
         });
 
         // ============================================
-        // SCROLL REVEAL
+        // PARALLAX - Peach follows scroll
         // ============================================
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        document.querySelectorAll('h2, .method, .faq-item').forEach(el => observer.observe(el));
+        const peach = document.querySelector('.peach');
+        let ticking = false;
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const parallax = peach.dataset.parallax || 0.3;
+                    peach.style.transform = `translateY(${scrollY * parallax}px) rotate(${-2 + scrollY * 0.02}deg)`;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
 
         // ============================================
-        // PARTICLE SYSTEM
+        // CACHED DOM ELEMENTS
         // ============================================
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
@@ -978,34 +898,69 @@ open /Applications/Spank.app</div>
         const peachEl = document.querySelector('.peach');
         const body = document.body;
 
+        // ============================================
+        // PARTICLE SYSTEM
+        // ============================================
         let particles = [];
         let animationId = null;
 
+        let resizeScheduled = false;
         function resize() {
             canvas.width = innerWidth;
             canvas.height = innerHeight;
         }
         resize();
-
-        let resizeTimeout;
+        
         addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(resize, 100);
+            if (!resizeScheduled) {
+                resizeScheduled = true;
+                requestAnimationFrame(() => {
+                    resize();
+                    resizeScheduled = false;
+                });
+            }
         });
+
+        // Ripple pool
+        const RIPPLE_POOL_SIZE = 5;
+        const ripplePool = [];
+        let rippleIndex = 0;
+
+        (function initRipplePool() {
+            for (let i = 0; i < RIPPLE_POOL_SIZE; i++) {
+                const r = document.createElement('div');
+                r.className = 'click-ripple';
+                r.style.cssText = 'width:80px;height:80px;margin:-40px;display:none;';
+                body.appendChild(r);
+                ripplePool.push(r);
+            }
+        })();
+
+        function ripple(x, y) {
+            const r = ripplePool[rippleIndex];
+            rippleIndex = (rippleIndex + 1) % RIPPLE_POOL_SIZE;
+            r.style.left = x + 'px';
+            r.style.top = y + 'px';
+            r.style.display = 'block';
+            r.style.animation = 'none';
+            r.offsetHeight;
+            r.style.animation = 'ripple 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+            setTimeout(() => { r.style.display = 'none'; }, 600);
+        }
 
         class Particle {
             constructor(x, y) { this.reset(x, y); }
             reset(x, y) {
                 this.x = x; this.y = y;
-                this.size = Math.random() * 28 + 14;
-                this.vx = (Math.random() - 0.5) * 18;
-                this.vy = (Math.random() - 0.5) * 18 - 6;
-                this.gravity = 0.4;
+                this.size = Math.random() * 24 + 12;
+                this.vx = (Math.random() - 0.5) * 14;
+                this.vy = (Math.random() - 0.5) * 14 - 4;
+                this.gravity = 0.35;
                 this.opacity = 1;
-                this.decay = Math.random() * 0.025 + 0.012;
+                this.decay = Math.random() * 0.025 + 0.015;
                 this.rot = Math.random() * 360;
-                this.rotSpeed = (Math.random() - 0.5) * 15;
-                this.emoji = ['🍑','✨','💥','⭐','🔥'][Math.floor(Math.random() * 5)];
+                this.rotSpeed = (Math.random() - 0.5) * 12;
+                this.emoji = ['🍑','✨','💥','⭐','😵'][Math.floor(Math.random() * 5)];
                 this.alive = true;
             }
             update() {
@@ -1029,79 +984,76 @@ open /Applications/Spank.app</div>
         }
 
         const particlePool = [];
+        const PARTICLE_POOL_SIZE = 60;
+
         function getParticle(x, y) {
-            for (let p of particlePool) if (!p.alive) { p.reset(x, y); return p; }
-            if (particlePool.length < 80) { const p = new Particle(x, y); particlePool.push(p); return p; }
+            for (let i = 0; i < particlePool.length; i++) {
+                if (!particlePool[i].alive) {
+                    particlePool[i].reset(x, y);
+                    return particlePool[i];
+                }
+            }
+            if (particlePool.length < PARTICLE_POOL_SIZE) {
+                const p = new Particle(x, y);
+                particlePool.push(p);
+                return p;
+            }
             particlePool[0].reset(x, y);
             return particlePool[0];
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            let active = 0;
-            for (let p of particles) {
-                if (p.alive) { p.update(); p.draw(); active++; }
+            let activeCount = 0;
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                if (p.alive) {
+                    p.update();
+                    p.draw();
+                    activeCount++;
+                }
             }
-            if (active > 0) animationId = requestAnimationFrame(animate);
-            else { animationId = null; particles = []; }
+            if (activeCount > 0) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                animationId = null;
+                particles = [];
+            }
+        }
+
+        function startAnimation() {
+            if (animationId === null) {
+                animationId = requestAnimationFrame(animate);
+            }
         }
 
         function spawn(x, y) {
-            for (let i = 0; i < 16; i++) particles.push(getParticle(x, y));
-            if (!animationId) animationId = requestAnimationFrame(animate);
-        }
-
-        // Ripple pool
-        const ripplePool = [];
-        for (let i = 0; i < 5; i++) {
-            const r = document.createElement('div');
-            r.className = 'click-ripple';
-            r.style.cssText = 'width:100px;height:100px;margin:-50px;display:none;';
-            body.appendChild(r);
-            ripplePool.push(r);
-        }
-        let rippleIdx = 0;
-
-        function ripple(x, y) {
-            const r = ripplePool[rippleIdx];
-            rippleIdx = (rippleIdx + 1) % 5;
-            r.style.left = x + 'px';
-            r.style.top = y + 'px';
-            r.style.display = 'block';
-            r.style.animation = 'none';
-            r.offsetHeight;
-            r.style.animation = 'ripple 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-            setTimeout(() => r.style.display = 'none', 800);
+            for (let i = 0; i < 14; i++) {
+                particles.push(getParticle(x, y));
+            }
+            startAnimation();
         }
 
         // ============================================
         // INTERACTIONS
         // ============================================
-        function copyCode(id, btn) {
-            const el = document.getElementById(id);
-            // Get text content, replacing HTML entities
-            let text = el.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
+        function copyCode(el) {
+            navigator.clipboard.writeText(el.textContent).then(() => {
+                el.classList.add('copied');
+                setTimeout(() => el.classList.remove('copied'), 2000);
             });
         }
 
         function toggleFaq(el) {
             const item = el.closest('.faq-item');
             const wasOpen = item.classList.contains('open');
-            document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+            document.querySelectorAll('.faq-item').forEach(faq => faq.classList.remove('open'));
             if (!wasOpen) item.classList.add('open');
         }
 
         let ready = true;
         function slap(x, y, t) {
-            // Don't trigger on interactive elements
-            if (t.closest('a, button, .cta, .faq-q, .code, .copy-btn')) return;
+            if (t.closest('a,button,.cta,.faq-q,.code')) return;
             if (!ready) return;
             ready = false;
 
@@ -1114,19 +1066,16 @@ open /Applications/Spank.app</div>
             spawn(x, y);
             ripple(x, y);
 
-            peachEl.classList.remove('slapped');
-            void peachEl.offsetWidth; // Force reflow
             peachEl.classList.add('slapped');
             setTimeout(() => peachEl.classList.remove('slapped'), 500);
 
-            setTimeout(() => ready = true, 200);
+            setTimeout(() => { ready = true; }, 200);
         }
 
         document.addEventListener('click', e => slap(e.clientX, e.clientY, e.target));
         document.addEventListener('touchstart', e => {
             const t = e.touches[0];
-            const target = document.elementFromPoint(t.clientX, t.clientY) || body;
-            slap(t.clientX, t.clientY, target);
+            slap(t.clientX, t.clientY, document.elementFromPoint(t.clientX, t.clientY) || body);
         }, { passive: true });
     </script>
 </body>
